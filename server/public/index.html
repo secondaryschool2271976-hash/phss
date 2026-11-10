@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بوابة معهد الفراعنة العالي المتكاملة | Pharaohs University Portal</title>
+  <title>ويب الفراعنة | البوابة الأكاديمية الذكية لإدارة المحاضرات والكارنيهات والامتحانات</title>
   
   <!-- خط كيرو الرسمي ومكتبة Tailwind CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,13 +20,14 @@
           },
           colors: {
             pharaoh: {
-              gold: '#D4AF37',
-              goldLight: '#F5E7B2',
-              goldDark: '#997316',
-              navy: '#0F1C3F',
-              navyLight: '#1E3264',
+              gold: '#F2B827',
+              goldLight: '#FBE8A6',
+              goldDark: '#B8860B',
+              navy: '#0F1D40',
+              navyLight: '#1A2F66',
               navyDark: '#080E21',
-              papyrus: '#F8FAFC',
+              bgDark: '#070C1E',
+              cardDark: '#0D1735',
             }
           }
         }
@@ -37,12 +38,36 @@
   <style>
     body {
       font-family: 'Cairo', sans-serif;
+      background-color: #070C1E;
+      color: #E2E8F0;
     }
-    .drag-active {
-      border-color: #D4AF37 !important;
-      background-color: rgba(212, 175, 55, 0.08) !important;
-      transform: scale(1.01);
+
+    /* شريط الأخبار المتحرك السلس للعام الدراسي 2026-2027 */
+    @keyframes marqueeScroll {
+      0% {
+        transform: translateX(0%);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
     }
+
+    .marquee-container {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .marquee-content {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: marqueeScroll 35s linear infinite;
+    }
+
+    .marquee-container:hover .marquee-content {
+      animation-play-state: paused;
+    }
+
     @media print {
       body * {
         visibility: hidden;
@@ -55,423 +80,552 @@
         left: 0;
         top: 0;
         width: 100%;
+        background: white !important;
+        color: black !important;
       }
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col selection:bg-pharaoh-gold/20 selection:text-pharaoh-navyDark">
+<body class="min-h-screen flex flex-col justify-between selection:bg-pharaoh-gold/30 selection:text-white">
 
   <!-- ======================================================== -->
-  <!-- Header & Main Navigation Bar                             -->
+  <!-- 1. شريط متحرك علوي فائق السلاسة (العام الدراسي 2026-2027) -->
   <!-- ======================================================== -->
-  <header class="bg-gradient-to-r from-pharaoh-navyDark via-pharaoh-navy to-pharaoh-navyLight text-white shadow-xl sticky top-0 z-40 border-b border-pharaoh-gold/30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4">
+  <div class="bg-gradient-to-r from-[#050917] via-[#0A132C] to-[#050917] border-b border-pharaoh-gold/30 text-xs py-2 px-3 sm:px-6 relative z-50 shadow-md">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
       
-      <!-- Brand & Institute Title -->
-      <div class="flex items-center gap-3.5 cursor-pointer" onclick="switchMainTab('student')">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pharaoh-goldDark via-pharaoh-gold to-amber-300 flex items-center justify-center shadow-lg shadow-pharaoh-gold/20 flex-shrink-0">
-          <svg class="w-7 h-7 text-pharaoh-navyDark" fill="currentColor" viewBox="0 0 24 24">
+      <!-- شارة أكاديمية الفراعنة الثابتة -->
+      <div class="flex items-center gap-1.5 bg-pharaoh-gold text-pharaoh-navyDark px-3 py-1 rounded-full font-black text-[11px] flex-shrink-0 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-pharaoh-navyDark animate-ping"></span>
+        <span>أكاديمية الفراعنة</span>
+      </div>
+
+      <!-- مسار النص المتحرك (مزدوج لتكرار لا نهائي بدون فجوات) -->
+      <div class="marquee-container flex-1 overflow-hidden" dir="ltr">
+        <div class="marquee-content flex items-center gap-8 text-[11px] sm:text-xs font-semibold text-slate-200">
+          
+          <!-- المقطع الأول -->
+          <span class="text-pharaoh-gold font-bold">★ أكاديمية الفراعنة للحاسب الآلي ونظم المعلومات وإدارة الأعمال ★</span>
+          <span class="text-white">العام الدراسي 2026-2027</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-amber-200">شعبة نظم المعلومات الإدارية (MIS)</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-amber-200">شعبة علوم الحاسب (CS)</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-amber-200">شعبة إدارة الأعمال (BA)</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-emerald-300 font-bold">فتح باب تسجيل المقررات بنظام الساعات المعتمدة (18 ساعة كحد أقصى)</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-sky-300">سحابة التخزين الأكاديمي Cloudflare R2 نشطة لرفع المحاضرات والشيتات والواجبات</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-amber-300 font-bold">جداول الامتحانات واللجان الرسمية معتمدة عبر البوابة الذكية</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-white">يُشترط الاسم الرباعي الكامل ورقم الهاتف لتسجيل الكارنيه الجامعي الفوري</span>
+
+          <!-- تكرار المقطع لضمان استمرارية الحركة السلسة -->
+          <span class="text-pharaoh-gold font-bold">★ أكاديمية الفراعنة للحاسب الآلي ونظم المعلومات وإدارة الأعمال ★</span>
+          <span class="text-white">العام الدراسي 2026-2027</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-amber-200">شعبة نظم المعلومات الإدارية (MIS)</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-amber-200">شعبة علوم الحاسب (CS)</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-amber-200">شعبة إدارة الأعمال (BA)</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-emerald-300 font-bold">فتح باب تسجيل المقررات بنظام الساعات المعتمدة (18 ساعة كحد أقصى)</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-sky-300">سحابة التخزين الأكاديمي Cloudflare R2 نشطة لرفع المحاضرات والشيتات والواجبات</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-amber-300 font-bold">جداول الامتحانات واللجان الرسمية معتمدة عبر البوابة الذكية</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-white">يُشترط الاسم الرباعي الكامل ورقم الهاتف لتسجيل الكارنيه الجامعي الفوري</span>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 2. Header & Main Navigation Bar (مطابق تماماً للتصميم)   -->
+  <!-- ======================================================== -->
+  <header class="bg-[#0A132C]/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-40 shadow-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- شعار ويب الفراعنة (مثل الصورة تماماً) -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchMainCardTab('register')">
+        <div class="w-10 h-10 rounded-xl bg-pharaoh-gold flex items-center justify-center text-pharaoh-navyDark shadow-md shadow-pharaoh-gold/20 flex-shrink-0">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm0 13l-7-3.18V17c0 3.31 3.13 6 7 6s7-2.69 7-6v-5.18L12 15z"/>
           </svg>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-lg sm:text-xl font-black text-pharaoh-goldLight tracking-wide">
-              معهد الفراعنة العالي
-            </h1>
-            <span class="text-[10px] bg-pharaoh-gold text-pharaoh-navyDark px-2 py-0.5 rounded-full font-extrabold">بوابة الويب</span>
+            <span class="text-lg font-black text-white tracking-wide">ويب الفراعنة</span>
+            <span class="text-[9px] bg-amber-400/20 text-pharaoh-gold border border-pharaoh-gold/40 px-2 py-0.5 rounded-full font-bold">Akademy Al-Pharaohs</span>
           </div>
-          <p class="text-xs text-slate-300 font-medium">نظم معلومات إدارية | الساعات المعتمدة والسحابة الأكاديمية</p>
+          <p class="text-[10px] text-slate-300">البوابة الأكاديمية الذكية لإدارة المحاضرات والكارنيهات والامتحانات</p>
         </div>
       </div>
 
-      <!-- Main Portal Tabs Navigation -->
-      <nav class="flex items-center bg-white/10 p-1.5 rounded-2xl backdrop-blur-md border border-white/10 gap-1 text-xs sm:text-sm font-bold">
+      <!-- أزرار شريط التنقل (Navbar Tabs) -->
+      <nav class="flex items-center gap-1 sm:gap-2 text-xs font-bold overflow-x-auto max-w-full pb-1 md:pb-0">
+        <!-- زر تسجيل الدخول / قيد جديد البارز -->
         <button 
-          id="tabBtnStudent" 
-          onclick="switchMainTab('student')" 
-          class="px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 bg-pharaoh-gold text-pharaoh-navyDark shadow-md shadow-pharaoh-gold/20"
+          id="navBtnAuth" 
+          onclick="switchMainCardTab('register')" 
+          class="px-4 py-2 bg-pharaoh-gold text-pharaoh-navyDark font-extrabold rounded-xl shadow-md hover:bg-amber-300 transition flex items-center gap-1.5 whitespace-nowrap"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
           </svg>
-          بوابة الطالب
+          تسجيل الدخول / قيد جديد
         </button>
 
         <button 
-          id="tabBtnDoctor" 
-          onclick="switchMainTab('doctor')" 
-          class="px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 text-slate-200 hover:text-white hover:bg-white/10"
+          id="navBtnLectures" 
+          onclick="switchMainCardTab('lectures')" 
+          class="px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          <svg class="w-4 h-4 text-pharaoh-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           </svg>
-          بوابة الدكتور (المحاضرات)
+          استعراض المحاضرات
         </button>
 
         <button 
-          id="tabBtnAdmin" 
-          onclick="switchMainTab('admin')" 
-          class="px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 text-slate-200 hover:text-white hover:bg-white/10"
+          id="navBtnExams" 
+          onclick="switchMainCardTab('exams')" 
+          class="px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <svg class="w-4 h-4 text-pharaoh-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          لوحة المسؤول
+          جدول الامتحانات
+        </button>
+
+        <button 
+          id="navBtnCloud" 
+          onclick="switchMainCardTab('doctor')" 
+          class="px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap"
+        >
+          <svg class="w-4 h-4 text-pharaoh-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z" />
+          </svg>
+          سحابة R2
         </button>
       </nav>
 
-      <!-- Active User Badge / Status -->
-      <div id="userHeaderStatus" class="flex items-center gap-2 text-xs">
-        <!-- Injected via JavaScript -->
+      <!-- زر الدخول الأيسر (دخول / قيد) -->
+      <div class="hidden lg:flex items-center gap-2">
+        <button 
+          onclick="switchMainCardTab('login')" 
+          class="px-4 py-2 bg-pharaoh-gold/20 hover:bg-pharaoh-gold/30 text-pharaoh-goldLight border border-pharaoh-gold/40 text-xs font-bold rounded-xl transition flex items-center gap-1.5"
+        >
+          <span>دخول / قيد</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
       </div>
 
     </div>
   </header>
 
   <!-- ======================================================== -->
-  <!-- MAIN PORTAL WRAPPER                                      -->
+  <!-- MAIN CONTENT CONTAINER                                   -->
   <!-- ======================================================== -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full space-y-8">
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex-1 w-full space-y-6">
 
     <!-- ====================================================== -->
-    <!-- 1. STUDENT PORTAL (بوابة الطالب)                        -->
+    <!-- 3. Hero Card (مرحباً بكم في بوابة الفراعنة الأكاديمية) -->
     <!-- ====================================================== -->
-    <section id="sectionStudent" class="space-y-8">
+    <div class="bg-gradient-to-b from-[#101D42] to-[#0A132C] rounded-3xl p-6 sm:p-8 text-center border border-pharaoh-gold/30 shadow-2xl relative overflow-hidden">
+      <!-- Glow effect -->
+      <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-64 h-64 bg-pharaoh-gold/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <!-- Guest / Not Logged In View -->
-      <div id="studentGuestView" class="max-w-2xl mx-auto">
+      <!-- Icon -->
+      <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-to-tr from-pharaoh-gold to-amber-200 text-pharaoh-navyDark flex items-center justify-center shadow-lg relative z-10">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+        </svg>
+      </div>
+
+      <!-- Heading & Description -->
+      <h2 class="text-xl sm:text-2xl font-black text-white mb-2 tracking-wide relative z-10">
+        مرحباً بكم في بوابة الفراعنة الأكاديمية الذكية
+      </h2>
+      <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed relative z-10 mb-5">
+        المنصة الرسمية المعتمدة لطلاب وأعضاء هيئة التدريس وإدارة الجامعة لتصفح المحاضرات، تسليم الواجبات، مراجعة جداول الامتحانات، وطباعة الكارنيهات الجامعية.
+      </p>
+
+      <!-- Quick Demo Login Pills (مثل الصورة) -->
+      <div class="flex flex-wrap items-center justify-center gap-2 pt-2 border-t border-white/10 text-xs relative z-10">
+        <span class="text-slate-400 font-semibold ml-2">دخول تجريبي سريع:</span>
+        <button 
+          type="button" 
+          onclick="demoLoginStudent()" 
+          class="px-3 py-1.5 bg-amber-400/10 hover:bg-amber-400/20 text-pharaoh-goldLight border border-pharaoh-gold/40 rounded-xl transition flex items-center gap-1 font-bold"
+        >
+          <span>👤 حساب طالب</span>
+        </button>
+        <button 
+          type="button" 
+          onclick="demoLoginDoctor()" 
+          class="px-3 py-1.5 bg-sky-400/10 hover:bg-sky-400/20 text-sky-300 border border-sky-400/30 rounded-xl transition flex items-center gap-1 font-bold"
+        >
+          <span>👨‍🏫 حساب دكتور</span>
+        </button>
+        <button 
+          type="button" 
+          onclick="demoLoginAdmin()" 
+          class="px-3 py-1.5 bg-purple-400/10 hover:bg-purple-400/20 text-purple-300 border border-purple-400/30 rounded-xl transition flex items-center gap-1 font-bold"
+        >
+          <span>⚙️ حساب مسؤول النظام</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- 4. Main White Card with Dark Header Navigation Tabs    -->
+    <!-- ====================================================== -->
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden text-slate-800">
+      
+      <!-- شريط تبويبات البطاقة الداكن (دخول الطالب | قيد جديد | الدكاترة | مسؤول النظام) -->
+      <div class="bg-[#0A132C] border-b border-slate-700/60 grid grid-cols-2 sm:grid-cols-4 text-center text-xs sm:text-sm font-bold text-slate-300">
         
-        <!-- Welcome Card -->
-        <div class="bg-gradient-to-br from-pharaoh-navy to-pharaoh-navyDark text-white p-8 rounded-3xl shadow-xl border border-pharaoh-gold/30 text-center relative overflow-hidden mb-6">
-          <div class="absolute -right-16 -top-16 w-48 h-48 bg-pharaoh-gold/15 rounded-full blur-3xl pointer-events-none"></div>
-          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-pharaoh-gold to-amber-200 text-pharaoh-navyDark flex items-center justify-center shadow-lg">
-            <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
-            </svg>
-          </div>
-          <h2 class="text-2xl font-black text-pharaoh-goldLight mb-1">مرحباً بك في بوابة الطلاب الإلكترونية</h2>
-          <p class="text-sm text-slate-300">سجل الدخول بالرقم القومي (14 رقماً) لاستعراض كارنيه المعهد وتسجيل الساعات المعتمدة والمحاضرات</p>
-        </div>
+        <button 
+          id="cardTabLogin" 
+          onclick="switchMainCardTab('login')" 
+          class="py-3.5 sm:py-4 px-2 transition-all flex items-center justify-center gap-1.5 hover:text-white hover:bg-white/5 border-b-2 border-transparent"
+        >
+          <svg class="w-4 h-4 text-pharaoh-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          دخول الطالب
+        </button>
 
-        <!-- Auth Tabs: Login vs Register -->
-        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="grid grid-cols-2 text-center text-sm font-bold border-b border-slate-100 bg-slate-50/50">
-            <button id="authTabLogin" onclick="switchAuthTab('login')" class="py-4 border-b-2 border-pharaoh-gold text-pharaoh-navyDark bg-white transition">
-              تسجيل الدخول بالرقم القومي
-            </button>
-            <button id="authTabRegister" onclick="switchAuthTab('register')" class="py-4 text-slate-500 hover:text-pharaoh-navy transition">
-              تسجيل طالب جديد
-            </button>
-          </div>
+        <!-- التبويب النشط الافتراضي (قيد جديد) كما في صورة المستخدم -->
+        <button 
+          id="cardTabRegister" 
+          onclick="switchMainCardTab('register')" 
+          class="py-3.5 sm:py-4 px-2 transition-all flex items-center justify-center gap-1.5 text-pharaoh-gold bg-[#101D42] border-b-2 border-pharaoh-gold font-black shadow-inner"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+          </svg>
+          قيد جديد
+        </button>
 
-          <div class="p-6 sm:p-8">
-            <!-- Login Form -->
-            <form id="studentLoginForm" class="space-y-5">
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-2">الرقم القومي للطالب (14 رقماً مصرياً) *</label>
-                <div class="relative">
-                  <input 
-                    type="text" 
-                    id="loginNationalId" 
-                    required 
-                    maxlength="14"
-                    placeholder="أدخل 14 رقماً (مثال: 30401010101234)" 
-                    class="w-full pr-11 pl-4 py-3.5 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold focus:border-pharaoh-gold text-base font-mono text-slate-900 bg-slate-50/50"
-                  >
-                  <svg class="w-5 h-5 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
-                  </svg>
-                </div>
-                <p class="text-[11px] text-slate-400 mt-1.5">يمكنك الدخول مباشرة إذا كنت مسجلاً في قاعدة بيانات معهد الفراعنة</p>
-              </div>
+        <button 
+          id="cardTabDoctor" 
+          onclick="switchMainCardTab('doctor')" 
+          class="py-3.5 sm:py-4 px-2 transition-all flex items-center justify-center gap-1.5 hover:text-white hover:bg-white/5 border-b-2 border-transparent"
+        >
+          <svg class="w-4 h-4 text-pharaoh-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          الدكاترة
+        </button>
 
-              <button 
-                type="submit" 
-                id="loginSubmitBtn"
-                class="w-full py-3.5 bg-gradient-to-r from-pharaoh-navy to-pharaoh-navyDark hover:from-pharaoh-navyLight hover:to-pharaoh-navy text-white font-bold rounded-2xl shadow-lg shadow-pharaoh-navy/20 transition flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>دخول بوابة الطالب</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
-
-              <!-- Quick Demo Login Button -->
-              <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                <span>أو يمكنك تجربة البوابة بحساب طالب تجريبي:</span>
-                <button 
-                  type="button" 
-                  onclick="demoStudentLogin()" 
-                  class="font-bold text-pharaoh-goldDark hover:underline"
-                >
-                  دخول سريع كطالب (الفرقة الثانية)
-                </button>
-              </div>
-            </form>
-
-            <!-- Register Form -->
-            <form id="studentRegisterForm" class="hidden space-y-4">
-              <!-- Full Name (Must be 4 parts) -->
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">اسم الطالب بالكامل (شرط إلزامي: اسم رباعي) *</label>
-                <input 
-                  type="text" 
-                  id="regFullName" 
-                  required 
-                  placeholder="مثال: أحمد محمد علي حسن" 
-                  class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold text-sm"
-                >
-                <p id="regNameValidation" class="text-[11px] text-slate-400 mt-1">يجب إدخال 4 مقاطع أسماء على الأقل لضمان التسجيل الأكاديمي المعتمد.</p>
-              </div>
-
-              <!-- National ID -->
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">الرقم القومي (14 رقماً) *</label>
-                <input 
-                  type="text" 
-                  id="regNationalId" 
-                  required 
-                  maxlength="14"
-                  placeholder="14 رقماً تبدأ بـ 2 أو 3" 
-                  class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold text-sm font-mono"
-                >
-              </div>
-
-              <!-- Phone with SMS Verification -->
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">رقم الهاتف للتحقق (مصر) *</label>
-                <div class="flex gap-2">
-                  <input 
-                    type="tel" 
-                    id="regPhone" 
-                    required 
-                    placeholder="مثال: 01012345678" 
-                    class="flex-1 px-4 py-3 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold text-sm font-mono"
-                  >
-                  <button 
-                    type="button" 
-                    id="sendOtpBtn" 
-                    onclick="sendPhoneOtp()" 
-                    class="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-pharaoh-navy font-bold text-xs rounded-2xl transition whitespace-nowrap"
-                  >
-                    إرسال كود التحقق
-                  </button>
-                </div>
-              </div>
-
-              <!-- OTP Code Input (Appears after clicking send) -->
-              <div id="otpBox" class="hidden bg-amber-50/70 p-4 rounded-2xl border border-amber-200 space-y-2">
-                <div class="flex items-center justify-between">
-                  <label class="block text-xs font-bold text-amber-900">أدخل كود التحقق المرسل (SMS OTP):</label>
-                  <span id="demoOtpHint" class="text-[11px] font-mono text-amber-700 font-bold bg-amber-200/60 px-2 py-0.5 rounded-lg"></span>
-                </div>
-                <div class="flex gap-2">
-                  <input 
-                    type="text" 
-                    id="regOtpInput" 
-                    maxlength="6"
-                    placeholder="كود مكون من 6 أرقام" 
-                    class="flex-1 px-4 py-2.5 rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono text-center tracking-widest text-sm bg-white"
-                  >
-                  <button 
-                    type="button" 
-                    onclick="verifyOtpCode()" 
-                    class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl transition"
-                  >
-                    تأكيد الكود
-                  </button>
-                </div>
-                <p id="otpStatusMsg" class="text-[11px] text-amber-800"></p>
-              </div>
-
-              <!-- Department & Year -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1.5">القسم الدراسي *</label>
-                  <select id="regDept" class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-pharaoh-gold text-xs bg-white">
-                    <option value="نظم معلومات إدارية (MIS)" selected>نظم معلومات إدارية (MIS)</option>
-                    <option value="علوم حاسب (CS)">علوم حاسب (CS)</option>
-                    <option value="إدارة أعمال (BA)">إدارة أعمال (BA)</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1.5">الفرقة الدراسية *</label>
-                  <select id="regYear" class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-pharaoh-gold text-xs bg-white">
-                    <option value="الفرقة الأولى">الفرقة الأولى</option>
-                    <option value="الفرقة الثانية" selected>الفرقة الثانية</option>
-                    <option value="الفرقة الثالثة">الفرقة الثالثة</option>
-                    <option value="الفرقة الرابعة">الفرقة الرابعة</option>
-                  </select>
-                </div>
-              </div>
-
-              <button 
-                type="submit" 
-                id="regSubmitBtn" 
-                class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-lg transition mt-2 cursor-pointer flex items-center justify-center gap-2"
-              >
-                <span>تسجيل واعتماد الحساب الأكاديمي</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </button>
-            </form>
-          </div>
-        </div>
+        <button 
+          id="cardTabAdmin" 
+          onclick="switchMainCardTab('admin')" 
+          class="py-3.5 sm:py-4 px-2 transition-all flex items-center justify-center gap-1.5 hover:text-white hover:bg-white/5 border-b-2 border-transparent"
+        >
+          <svg class="w-4 h-4 text-pharaoh-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          مسؤول النظام
+        </button>
 
       </div>
 
-      <!-- Authenticated Student Dashboard View -->
-      <div id="studentAuthView" class="hidden space-y-8">
-        
-        <!-- Student Header Profile Banner -->
-        <div class="bg-gradient-to-r from-pharaoh-navyDark via-pharaoh-navy to-pharaoh-navyLight rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-pharaoh-gold/25 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div class="flex items-center gap-4 text-right w-full md:w-auto">
-            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-pharaoh-gold to-amber-200 text-pharaoh-navyDark flex items-center justify-center font-black text-2xl shadow-md border-2 border-white/20 flex-shrink-0">
-              <span id="authStudentAvatarInitial">أ</span>
-            </div>
+      <!-- محتوى التبويبات -->
+      <div class="p-6 sm:p-10">
+
+        <!-- ==================================================== -->
+        <!-- أ) تبويب: قيد طالب جديد في المنظومة الأكاديمية (مطابق) -->
+        <!-- ==================================================== -->
+        <div id="contentRegister" class="space-y-6">
+          
+          <div class="text-center space-y-1 mb-6">
+            <h3 class="text-lg sm:text-xl font-black text-slate-900">قيد طالب جديد في المنظومة الأكاديمية</h3>
+            <p class="text-xs text-slate-500 font-medium">يتم تسجيل الطالب فورياً في قاعدة بيانات سوبابيز وتوليد الكارنيه وكود الأكاديمي</p>
+          </div>
+
+          <form id="formNewStudentReg" class="space-y-5 max-w-3xl mx-auto">
+            
+            <!-- 1. الاسم الرباعي -->
             <div>
-              <div class="flex items-center gap-2 flex-wrap">
-                <h3 id="authStudentName" class="text-xl sm:text-2xl font-black text-pharaoh-goldLight">أحمد محمد علي حسن</h3>
-                <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">طالب مسجل</span>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">الاسم الرباعي للطالب باللغة العربية *</label>
+              <input 
+                type="text" 
+                id="inputRegName" 
+                required 
+                placeholder="مثال: أحمد محمود مصطفى السعيد" 
+                class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold focus:border-pharaoh-gold text-sm text-slate-900 bg-slate-50/50"
+              >
+              <p id="regNameError" class="text-[11px] text-slate-400 mt-1">يُشترط أن يتكون الاسم من 4 أسماء على الأقل لضمان التسجيل الرسمي المعتمد.</p>
+            </div>
+
+            <!-- 2. الرقم القومي (14 رقماً) -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">الرقم القومي الصحيح (14 رقماً) *</label>
+              <input 
+                type="text" 
+                id="inputRegNationalId" 
+                required 
+                maxlength="14"
+                placeholder="30205120101543" 
+                class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold focus:border-pharaoh-gold text-sm font-mono text-slate-900 bg-slate-50/50"
+              >
+            </div>
+
+            <!-- 3. الشعبة والقسم + الفرقة الدراسية -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">الشعبة / القسم الأكاديمي *</label>
+                <select id="selectRegDept" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-pharaoh-gold text-xs bg-white text-slate-800">
+                  <option value="علوم حاسب (CS)" selected>علوم حاسب (CS)</option>
+                  <option value="نظم معلومات إدارية (MIS)">نظم معلومات إدارية (MIS)</option>
+                  <option value="إدارة أعمال (BA)">إدارة أعمال (BA)</option>
+                </select>
               </div>
-              <p class="text-xs sm:text-sm text-slate-300 mt-1">
-                القسم: <span id="authStudentDept" class="text-white font-bold">نظم معلومات إدارية</span> | 
-                الفرقة: <span id="authStudentYear" class="text-pharaoh-gold font-bold">الفرقة الثانية</span>
-              </p>
-              <p class="text-xs text-slate-400 font-mono mt-0.5">
-                الرقم القومي: <span id="authStudentId" class="text-slate-300">30401010101234</span>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">الفرقة الدراسية *</label>
+                <select id="selectRegYear" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-pharaoh-gold text-xs bg-white text-slate-800">
+                  <option value="الفرقة الثانية" selected>الفرقة الثانية</option>
+                  <option value="الفرقة الأولى">الفرقة الأولى</option>
+                  <option value="الفرقة الثالثة">الفرقة الثالثة</option>
+                  <option value="الفرقة الرابعة">الفرقة الرابعة</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 4. رقم هاتف الطالب مع زر التحقق (واتساب / تليجرام) -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold text-slate-700">رقم هاتف الطالب (للتواصل وتلقي كود التحقق) *</label>
+                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <span>✓</span> تحقق مجاني (واتساب / تليجرام) 100%
+                </span>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <input 
+                  type="tel" 
+                  id="inputRegPhone" 
+                  required 
+                  placeholder="01012345678" 
+                  class="flex-1 px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold text-sm font-mono text-slate-900 bg-slate-50/50"
+                >
+                <button 
+                  type="button" 
+                  id="btnSendOtp" 
+                  onclick="triggerPhoneOtp()" 
+                  class="px-5 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                  إرسال كود التحقق (واتساب / تليجرام)
+                </button>
+              </div>
+              <p class="text-[11px] text-slate-400">
+                التحقق مجاني بالكامل بدون أي رسوم! اضغط على الزر لتستلم الكود المكون من 6 أرقام عبر واتساب أو تليجرام فوراً.
               </p>
             </div>
-          </div>
 
-          <!-- Quick Actions in Banner -->
-          <div class="flex items-center gap-2 w-full md:w-auto justify-end">
-            <button onclick="scrollToSection('cardArea')" class="px-4 py-2.5 bg-pharaoh-gold text-pharaoh-navyDark font-bold text-xs rounded-xl shadow-md hover:bg-amber-300 transition flex items-center gap-1.5">
-              <span>عرض الكارنيه</span>
-            </button>
-            <button onclick="scrollToSection('creditSection')" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition">
-              تسجيل الساعات
-            </button>
-            <button onclick="logoutStudent()" class="px-3 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold text-xs rounded-xl border border-rose-500/30 transition">
-              تسجيل خروج
-            </button>
-          </div>
-        </div>
-
-        <!-- Student Sub-Tabs Menu -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200 text-xs sm:text-sm font-bold">
-          <button id="stuSubTabCard" onclick="switchStudentSubTab('card')" class="px-4 py-2.5 rounded-2xl bg-pharaoh-navy text-pharaoh-goldLight shadow-sm flex items-center gap-2 whitespace-nowrap">
-            🪪 الكارنيه الجامعي المعتمد
-          </button>
-          <button id="stuSubTabCredit" onclick="switchStudentSubTab('credit')" class="px-4 py-2.5 rounded-2xl bg-white text-slate-600 hover:text-pharaoh-navy border border-slate-200 flex items-center gap-2 whitespace-nowrap">
-            📚 تسجيل الساعات المعتمدة (18 ساعة)
-          </button>
-          <button id="stuSubTabLectures" onclick="switchStudentSubTab('lectures')" class="px-4 py-2.5 rounded-2xl bg-white text-slate-600 hover:text-pharaoh-navy border border-slate-200 flex items-center gap-2 whitespace-nowrap">
-            📂 قاعة المحاضرات والملفات (R2)
-          </button>
-          <button id="stuSubTabExams" onclick="switchStudentSubTab('exams')" class="px-4 py-2.5 rounded-2xl bg-white text-slate-600 hover:text-pharaoh-navy border border-slate-200 flex items-center gap-2 whitespace-nowrap">
-            📅 جدول الامتحانات واللجان
-          </button>
-        </div>
-
-        <!-- 1. Digital Student ID Card Section -->
-        <div id="stuViewCard" class="space-y-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-lg font-black text-slate-900 flex items-center gap-2">
-                بطاقة الكارنيه الجامعي الرقمية
-              </h3>
-              <p class="text-xs text-slate-500">البطاقة الرسمية المعتمدة لدخول المحاضرات والامتحانات واللجان</p>
+            <!-- صندوق إدخال الكود (يظهر بعد الضغط على الإرسال) -->
+            <div id="boxOtpVerification" class="hidden bg-amber-50 p-4 rounded-2xl border border-amber-200 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-amber-900">أدخل كود التحقق المرسل:</span>
+                <span id="labelOtpSample" class="text-xs font-mono font-bold bg-amber-200 text-amber-900 px-2.5 py-0.5 rounded-lg"></span>
+              </div>
+              <div class="flex gap-2">
+                <input 
+                  type="text" 
+                  id="inputOtpVerify" 
+                  maxlength="6"
+                  placeholder="الكود المكون من 6 أرقام" 
+                  class="flex-1 px-4 py-2.5 rounded-xl border border-amber-300 font-mono text-center tracking-widest text-sm bg-white"
+                >
+                <button 
+                  type="button" 
+                  onclick="confirmOtpVerification()" 
+                  class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl"
+                >
+                  تأكيد الكود
+                </button>
+              </div>
             </div>
-            <button onclick="window.print()" class="px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 text-xs font-bold rounded-xl shadow-sm flex items-center gap-1.5 transition">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-              </svg>
-              طباعة الكارنيه الرسمي
-            </button>
-          </div>
 
-          <!-- The Physical-style ID Card Container -->
-          <div id="printArea" class="flex justify-center py-4">
-            <div class="w-full max-w-md bg-gradient-to-br from-pharaoh-navyDark via-pharaoh-navy to-pharaoh-navyLight rounded-3xl p-6 text-white shadow-2xl border-2 border-pharaoh-gold relative overflow-hidden space-y-5">
-              
-              <!-- Background Hologram Watermark Pattern -->
-              <div class="absolute inset-0 opacity-5 pointer-events-none flex items-center justify-center">
-                <svg class="w-96 h-96" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm0 13l-7-3.18V17c0 3.31 3.13 6 7 6s7-2.69 7-6v-5.18L12 15z"/>
+            <!-- 5. بيانات ولي الأمر (كما في الصورة) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">اسم ولي الأمر، صلة القرابة (مثال: صلة القرابة: الأب / الأخ / العم) *</label>
+                <input 
+                  type="text" 
+                  id="inputRegGuardianName" 
+                  placeholder="مثال: محمود مصطفى السعيد - الأب" 
+                  class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold text-xs text-slate-900 bg-slate-50/50"
+                >
+                <p class="text-[10px] text-slate-400 mt-1">الصيغة المطلوبة: اسم ولي الأمر - صلة القرابة (مثال: محمود مصطفى - الأب)</p>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">رقم تليفون ولي الأمر *</label>
+                <input 
+                  type="tel" 
+                  id="inputRegGuardianPhone" 
+                  placeholder="01090765432" 
+                  class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold text-xs font-mono text-slate-900 bg-slate-50/50"
+                >
+              </div>
+            </div>
+
+            <!-- زر الإرسال الذهبي الكبير (مثل الصورة تماماً) -->
+            <div class="pt-4">
+              <button 
+                type="submit" 
+                id="btnSubmitRegistration"
+                class="w-full py-4 bg-pharaoh-gold hover:bg-amber-400 text-pharaoh-navyDark font-black text-sm rounded-2xl shadow-lg shadow-pharaoh-gold/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
                 </svg>
-              </div>
+                <span>إتمام القيد وإصدار الكارنيه الجامعي</span>
+              </button>
+            </div>
 
-              <!-- Card Header -->
-              <div class="flex items-center justify-between border-b border-pharaoh-gold/40 pb-3 relative z-10">
+          </form>
+
+        </div>
+
+
+        <!-- ==================================================== -->
+        <!-- ب) تبويب: دخول الطالب بالرقم القومي                    -->
+        <!-- ==================================================== -->
+        <div id="contentLogin" class="hidden space-y-6 max-w-xl mx-auto py-4">
+          <div class="text-center space-y-1">
+            <h3 class="text-lg font-black text-slate-900">دخول الطالب إلى البوابة</h3>
+            <p class="text-xs text-slate-500">أدخل الرقم القومي المسجل (14 رقماً) لاستعراض الكارنيه والمقررات والمحاضرات</p>
+          </div>
+
+          <form id="formStudentLoginDirect" class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">الرقم القومي للطالب (14 رقماً) *</label>
+              <input 
+                type="text" 
+                id="inputDirectLoginId" 
+                required 
+                maxlength="14"
+                placeholder="أدخل 14 رقماً (مثال: 30401010101234)" 
+                class="w-full px-4 py-3.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-pharaoh-gold font-mono text-base text-slate-900"
+              >
+            </div>
+
+            <button 
+              type="submit" 
+              class="w-full py-3.5 bg-pharaoh-navy hover:bg-pharaoh-navyLight text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2"
+            >
+              <span>تسجيل الدخول</span>
+              <svg class="w-4 h-4 text-pharaoh-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
+          </form>
+        </div>
+
+
+        <!-- ==================================================== -->
+        <!-- ج) شاشة الطالب بعد تسجيل الدخول (الكارنيه + الساعات) -->
+        <!-- ==================================================== -->
+        <div id="contentStudentProfile" class="hidden space-y-8">
+          
+          <!-- بطاقة الطالب الترحيبية -->
+          <div class="bg-gradient-to-r from-pharaoh-navyDark to-pharaoh-navy text-white p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 border border-pharaoh-gold/30">
+            <div class="flex items-center gap-3">
+              <div class="w-14 h-14 rounded-xl bg-pharaoh-gold text-pharaoh-navyDark font-black text-xl flex items-center justify-center">
+                <span id="badgeAvatarLetter">أ</span>
+              </div>
+              <div>
+                <h4 id="labelStudentName" class="text-base font-black text-pharaoh-goldLight">أحمد محمود مصطفى السعيد</h4>
+                <p class="text-xs text-slate-300">
+                  <span id="labelStudentDept">علوم حاسب (CS)</span> • <span id="labelStudentYear">الفرقة الثانية</span>
+                </p>
+                <p class="text-[11px] font-mono text-slate-400">الرقم القومي: <span id="labelStudentId">30205120101543</span></p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="window.print()" class="px-4 py-2 bg-pharaoh-gold text-pharaoh-navyDark font-bold text-xs rounded-xl shadow-sm hover:bg-amber-300 transition">
+                طباعة الكارنيه
+              </button>
+              <button onclick="logoutActiveStudent()" class="px-3 py-2 bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-bold text-xs rounded-xl transition">
+                خروج
+              </button>
+            </div>
+          </div>
+
+          <!-- تفاصيل الكارنيه الجامعي الرسمي (قابل للطباعة) -->
+          <div id="printArea" class="flex justify-center py-2">
+            <div class="w-full max-w-md bg-gradient-to-br from-[#0B1530] via-[#0F1D40] to-[#080E21] rounded-3xl p-6 text-white shadow-2xl border-2 border-pharaoh-gold relative overflow-hidden space-y-4">
+              <!-- Header -->
+              <div class="flex items-center justify-between border-b border-pharaoh-gold/40 pb-3">
                 <div class="flex items-center gap-2.5">
-                  <div class="w-10 h-10 rounded-xl bg-pharaoh-gold flex items-center justify-center text-pharaoh-navyDark font-black">
+                  <div class="w-10 h-10 rounded-xl bg-pharaoh-gold text-pharaoh-navyDark flex items-center justify-center font-black">
                     🏛️
                   </div>
                   <div>
-                    <h4 class="text-xs font-black text-pharaoh-goldLight tracking-wide">جمهورية مصر العربية</h4>
-                    <h5 class="text-sm font-extrabold text-white">معهد الفراعنة العالي</h5>
-                    <p class="text-[10px] text-slate-300">وزارة التعليم العالي والبحث العلمي</p>
+                    <h5 class="text-xs font-black text-pharaoh-goldLight">أكاديمية معهد الفراعنة العالي</h5>
+                    <p class="text-[10px] text-slate-300">وزارة التعليم العالي - جمهورية مصر العربية</p>
                   </div>
                 </div>
-                <div class="text-left">
-                  <span class="text-[10px] bg-pharaoh-gold/20 text-pharaoh-goldLight border border-pharaoh-gold/40 px-2 py-0.5 rounded-full font-bold block mb-1">
-                    بطاقة طالب معتمدة
-                  </span>
-                  <span class="text-[10px] font-mono text-slate-400">2024 / 2025</span>
-                </div>
+                <span class="text-[10px] bg-pharaoh-gold/20 text-pharaoh-goldLight border border-pharaoh-gold/40 px-2 py-0.5 rounded-full font-bold">
+                  2026-2027
+                </span>
               </div>
 
-              <!-- Card Body: Student Photo + Personal Info -->
-              <div class="flex gap-4 items-center relative z-10">
-                <!-- Avatar / Photo -->
-                <div class="w-24 h-28 rounded-2xl bg-gradient-to-b from-slate-700 to-slate-900 border-2 border-pharaoh-gold p-1 flex-shrink-0 flex flex-col items-center justify-center text-center shadow-md">
-                  <div class="w-16 h-16 rounded-full bg-pharaoh-navyLight text-pharaoh-goldLight flex items-center justify-center font-black text-2xl mb-1 shadow-inner">
-                    <span id="cardAvatarLetter">أ</span>
-                  </div>
-                  <span class="text-[9px] text-pharaoh-gold font-bold">صورة الطالب</span>
+              <!-- Body -->
+              <div class="flex gap-4 items-center">
+                <div class="w-24 h-28 rounded-2xl bg-slate-800 border-2 border-pharaoh-gold flex flex-col items-center justify-center text-center shadow-inner flex-shrink-0">
+                  <span class="text-2xl font-black text-pharaoh-gold">🎓</span>
+                  <span class="text-[9px] text-pharaoh-gold font-bold mt-1">طالب منتظم</span>
                 </div>
-
-                <!-- Info Grid -->
-                <div class="space-y-1.5 text-xs flex-1">
+                <div class="space-y-1 text-xs flex-1">
                   <div>
                     <span class="text-slate-400 text-[10px] block">اسم الطالب الرباعي:</span>
-                    <p id="cardStudentName" class="font-bold text-white text-sm truncate">أحمد محمد علي حسن</p>
+                    <p id="cardNameVal" class="font-bold text-white text-sm">أحمد محمود مصطفى السعيد</p>
                   </div>
                   <div>
-                    <span class="text-slate-400 text-[10px] block">الرقم القومي (14 رقماً):</span>
-                    <p id="cardNationalId" class="font-mono font-bold text-pharaoh-goldLight tracking-wider">30401010101234</p>
+                    <span class="text-slate-400 text-[10px] block">الرقم القومي:</span>
+                    <p id="cardIdVal" class="font-mono font-bold text-pharaoh-goldLight">30205120101543</p>
                   </div>
-                  <div class="grid grid-cols-2 gap-2 pt-0.5">
+                  <div class="grid grid-cols-2 gap-2 pt-1">
                     <div>
                       <span class="text-slate-400 text-[10px] block">القسم:</span>
-                      <p id="cardDept" class="font-bold text-slate-200 text-[11px]">نظم معلومات (MIS)</p>
+                      <p id="cardDeptVal" class="font-bold text-slate-200 text-[11px]">علوم حاسب (CS)</p>
                     </div>
                     <div>
                       <span class="text-slate-400 text-[10px] block">الفرقة:</span>
-                      <p id="cardYear" class="font-bold text-pharaoh-gold text-[11px]">الفرقة الثانية</p>
+                      <p id="cardYearVal" class="font-bold text-pharaoh-gold text-[11px]">الفرقة الثانية</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Card Footer: QR Code & Barcode -->
-              <div class="border-t border-pharaoh-gold/40 pt-3 flex items-center justify-between relative z-10">
+              <!-- Footer with QR -->
+              <div class="border-t border-pharaoh-gold/40 pt-3 flex items-center justify-between">
                 <div>
-                  <span class="text-[10px] text-slate-400 block font-mono">رقم القيد الجامعي:</span>
-                  <span id="cardRegCode" class="text-xs font-mono font-bold text-white">PHA-2024-8841</span>
-                  <div class="mt-1 flex items-center gap-1 text-[9px] text-emerald-400">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>كود أمني مشفر معتمد</span>
-                  </div>
+                  <span class="text-[10px] text-slate-400 block font-mono">كود القيد الأكاديمي:</span>
+                  <span id="cardCodeVal" class="text-xs font-mono font-bold text-white">PHA-2026-9041</span>
+                  <p class="text-[9px] text-emerald-400 mt-0.5">● كود أمني معتمد</p>
                 </div>
-
-                <!-- QR Code Simulation -->
-                <div class="bg-white p-1.5 rounded-xl shadow-md flex items-center justify-center" title="رمز التحقق الأمني السريع">
-                  <svg class="w-12 h-12 text-slate-900" viewBox="0 0 24 24" fill="currentColor">
+                <div class="bg-white p-1.5 rounded-xl shadow-md">
+                  <svg class="w-10 h-10 text-slate-900" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm10-2h8v8h-8V2zm2 2v4h4V4h-4zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm14-2h4v2h-4v-2zm-4 0h2v4h-2v-4zm2 4h4v4h-4v-4zm-2 2h2v2h-2v-2zm-6-2h2v4h-2v-4zm-2-2h4v2h-4v-2zm8-6h2v2h-2v-2zm-2 2h4v2h-4v-2z"/>
                   </svg>
                 </div>
@@ -479,432 +633,228 @@
 
             </div>
           </div>
-        </div>
 
-        <!-- 2. Credit Hour System Section (نظام الساعات المعتمدة - 18 ساعة) -->
-        <div id="stuViewCredit" class="hidden space-y-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h3 class="text-lg font-black text-slate-900 flex items-center gap-2">
-                تسجيل المواد الدراسية (نظام الساعات المعتمدة)
-                <span class="text-xs bg-pharaoh-gold text-pharaoh-navyDark px-2.5 py-0.5 rounded-full font-extrabold">الحد الأقصى: 18 ساعة</span>
-              </h3>
-              <p class="text-xs text-slate-500">مقررات الفرقة الثانية المعتمدة - الفصل الدراسي الحالي</p>
-            </div>
-
-            <!-- Hours Counter Pill -->
-            <div class="bg-white px-5 py-3 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3">
+          <!-- تسجيل الساعات المعتمدة (18 ساعة) لمقررات الفرقة الثانية -->
+          <div class="space-y-4 pt-4 border-t border-slate-200">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <span class="text-xs text-slate-400 block font-bold">إجمالي الساعات المسجلة:</span>
-                <div class="flex items-baseline gap-1">
-                  <span id="creditHoursCounter" class="text-2xl font-black text-pharaoh-navy">15</span>
-                  <span class="text-xs font-bold text-slate-400">/ 18 ساعة معتمدة</span>
-                </div>
+                <h4 class="text-base font-black text-slate-900">تسجيل المواد بنظام الساعات المعتمدة (الفرقة الثانية)</h4>
+                <p class="text-xs text-slate-500">الحد الأقصى للتسجيل هو 18 ساعة معتمدة لكل فصل دراسي</p>
               </div>
-              <div class="w-10 h-10 rounded-xl bg-amber-50 text-pharaoh-goldDark flex items-center justify-center font-bold">
-                ⏳
+              <div class="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-700">الساعات المسجلة:</span>
+                <span id="valTotalHours" class="text-lg font-black text-pharaoh-navy">15</span>
+                <span class="text-xs text-slate-400">/ 18 ساعة</span>
               </div>
             </div>
-          </div>
 
-          <!-- Visual Progress Bar for 18h -->
-          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-            <div class="flex items-center justify-between text-xs font-bold text-slate-700">
-              <span>نسبة اكتمال الساعات المعتمدة:</span>
-              <span id="creditProgressPercent" class="font-mono text-pharaoh-goldDark">83%</span>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
-              <div id="creditProgressBar" class="h-3 bg-gradient-to-r from-pharaoh-gold to-amber-500 rounded-full transition-all duration-300" style="width: 83%;"></div>
-            </div>
-            <p id="creditLimitAlert" class="text-[11px] text-slate-500"></p>
-          </div>
-
-          <!-- Courses Selection Grid -->
-          <div class="space-y-3">
-            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">المقررات الدراسية المتاحة للتسجيل (الفرقة الثانية):</h4>
-            <div id="creditCoursesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- قائمة المواد الدراسية الخمسة + المقرر الاختياري -->
+            <div id="gridStudentCourses" class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <!-- Rendered via JS -->
             </div>
-          </div>
 
-          <!-- Registration Actions -->
-          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="text-xs text-slate-600">
-              <p class="font-bold text-slate-800">تأكيد تسجيل الساعات الأكاديمية</p>
-              <p>يتم حفظ المقررات المختارة في سجل الطالب واعتمادها للإرشاد الأكاديمي.</p>
-            </div>
-            <div class="flex items-center gap-3 w-full sm:w-auto">
-              <button onclick="saveCourseRegistration()" class="flex-1 sm:flex-none px-6 py-3 bg-gradient-to-r from-pharaoh-navy to-pharaoh-navyDark hover:from-pharaoh-navyLight hover:to-pharaoh-navy text-white font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer">
-                <svg class="w-4 h-4 text-pharaoh-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                حفظ واعتماد المقررات
+            <div class="flex justify-end pt-2">
+              <button 
+                onclick="saveStudentCourseSelection()" 
+                class="px-6 py-2.5 bg-pharaoh-navy hover:bg-pharaoh-navyLight text-white font-bold text-xs rounded-xl shadow-md transition"
+              >
+                حفظ واعتماد تسجيل المواد
               </button>
             </div>
           </div>
+
         </div>
 
-        <!-- 3. Lectures & Files Library Section -->
-        <div id="stuViewLectures" class="space-y-6 hidden">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+
+        <!-- ==================================================== -->
+        <!-- د) تبويب: استعراض المحاضرات والملفات (R2)            -->
+        <!-- ==================================================== -->
+        <div id="contentLectures" class="hidden space-y-6">
+          <div class="flex items-center justify-between">
             <div>
-              <h3 class="text-lg font-black text-slate-900 flex items-center gap-2">
-                قاعة المحاضرات والملفات السحابية (Cloudflare R2)
-              </h3>
-              <p class="text-xs text-slate-500">تحميل مباشر وسريع للمحاضرات، الشيتات، والواجبات المرفوعة من قبل هيئة التدريس</p>
+              <h3 class="text-lg font-black text-slate-900">قاعة المحاضرات والملفات السحابية</h3>
+              <p class="text-xs text-slate-500">تحميل مباشر للمحاضرات والشيتات المرفوعة من هيئة التدريس عبر Cloudflare R2</p>
             </div>
-            <button onclick="loadLecturesList()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-pharaoh-navy font-bold text-xs rounded-xl transition flex items-center gap-1 self-start sm:self-auto">
-              تحديث المحاضرات
+            <button onclick="fetchLecturesForPortal()" class="text-xs text-pharaoh-navy font-bold hover:underline">
+              تحديث
             </button>
           </div>
 
-          <!-- Search & Filter Bar -->
-          <div class="relative w-full">
-            <input 
-              type="text" 
-              id="studentSearchLectures" 
-              placeholder="ابحث عن محاضرة باسم المادة (مثلاً: محاسبه التكاليف أو اللوجستيات)..." 
-              class="w-full pr-11 pl-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold text-sm bg-white shadow-sm"
-              oninput="filterStudentLectures()"
-            >
-            <svg class="w-5 h-5 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-
-          <!-- Lectures List Container -->
-          <div id="studentLecturesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Grid -->
+          <div id="portalLecturesList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Rendered dynamically -->
           </div>
         </div>
 
-        <!-- 4. Exam Schedule Section -->
-        <div id="stuViewExams" class="space-y-6 hidden">
+
+        <!-- ==================================================== -->
+        <!-- هـ) تبويب: جدول الامتحانات واللجان                   -->
+        <!-- ==================================================== -->
+        <div id="contentExams" class="hidden space-y-4">
           <div>
-            <h3 class="text-lg font-black text-slate-900 flex items-center gap-2">
-              جدول الامتحانات الرسمية ومواعيد اللجان
-            </h3>
-            <p class="text-xs text-slate-500">مواعيد الاختبارات النهائية لمقررات الفرقة الثانية للعام الجامعي 2024/2025</p>
+            <h3 class="text-lg font-black text-slate-900">جدول امتحانات الفصل الدراسي للفرقة الثانية</h3>
+            <p class="text-xs text-slate-500">مواعيد الاختبارات وأماكن اللجان الرسمية للعام الدراسي 2026-2027</p>
           </div>
 
-          <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
-            <div class="overflow-x-auto">
-              <table class="w-full text-right text-xs">
-                <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
-                  <tr>
-                    <th class="p-4">كود المادة</th>
-                    <th class="p-4">اسم المادة الدراسية</th>
-                    <th class="p-4">اليوم والتاريخ</th>
-                    <th class="p-4">توقيت الامتحان</th>
-                    <th class="p-4">المقر / القاعة</th>
-                    <th class="p-4">اللجنة المخصصة</th>
-                  </tr>
-                </thead>
-                <tbody id="examsTableBody" class="divide-y divide-slate-100">
-                  <!-- Rendered via JS -->
-                </tbody>
-              </table>
-            </div>
+          <div class="overflow-x-auto rounded-2xl border border-slate-200">
+            <table class="w-full text-right text-xs">
+              <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
+                <tr>
+                  <th class="p-3">كود المادة</th>
+                  <th class="p-3">اسم المادة</th>
+                  <th class="p-3">اليوم والتاريخ</th>
+                  <th class="p-3">التوقيت</th>
+                  <th class="p-3">القاعة / المدرج</th>
+                  <th class="p-3">اللجنة</th>
+                </tr>
+              </thead>
+              <tbody id="tableExamsBody" class="divide-y divide-slate-100">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
           </div>
         </div>
 
-      </div>
 
-    </section>
+        <!-- ==================================================== -->
+        <!-- و) تبويب: الدكاترة (رفع المحاضرات إلى R2)            -->
+        <!-- ==================================================== -->
+        <div id="contentDoctor" class="hidden space-y-6">
+          <div>
+            <h3 class="text-lg font-black text-slate-900">بوابة عضو هيئة التدريس ورفع المحاضرات</h3>
+            <p class="text-xs text-slate-500">رفع الملفات مباشرة إلى سحابة Cloudflare R2 بصيغ (PDF, MP4, PPTX, DOCX, ZIP)</p>
+          </div>
 
+          <form id="formDoctorUploadDirect" class="space-y-4 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر ملف المحاضرة *</label>
+              <input 
+                type="file" 
+                id="fileDoctorInput" 
+                required 
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs bg-white text-slate-800"
+              >
+            </div>
 
-    <!-- ====================================================== -->
-    <!-- 2. DOCTOR / FACULTY PORTAL (بوابة الدكتور)              -->
-    <!-- ====================================================== -->
-    <section id="sectionDoctor" class="space-y-8 hidden">
-      
-      <!-- Doctor Banner -->
-      <div class="bg-gradient-to-br from-pharaoh-navy to-pharaoh-navyDark text-white p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden border border-pharaoh-gold/20">
-        <div class="max-w-2xl">
-          <span class="inline-block text-xs uppercase tracking-wider text-pharaoh-gold font-bold bg-pharaoh-gold/10 px-3 py-1 rounded-full border border-pharaoh-gold/20 mb-3">
-            منصة عضو هيئة التدريس
-          </span>
-          <h2 class="text-2xl font-black text-white mb-2 leading-relaxed">
-            قاعة الدكتور الموحدة ورفع المحاضرات إلى Cloudflare R2
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            ارفع ملفات المحاضرات والشيتات والواجبات بصيغ (PDF, MP4, PPTX, DOCX, ZIP) مباشرة، ليتلقاها الطلاب على هواتفهم وحواسيبهم في نفس اللحظة.
-          </p>
-        </div>
-      </div>
-
-      <!-- File Upload Form -->
-      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
-        <h3 class="text-base font-bold text-slate-900 mb-6 flex items-center gap-2">
-          <svg class="w-5 h-5 text-pharaoh-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-          </svg>
-          إضافة محاضرة جديدة أو تكليف دراسي
-        </h3>
-
-        <form id="doctorUploadForm" class="space-y-6">
-          
-          <!-- Drag & Drop Zone -->
-          <div 
-            id="doctorDropZone" 
-            class="border-2 border-dashed border-slate-300 hover:border-pharaoh-gold transition-all duration-200 rounded-3xl p-8 text-center bg-slate-50/50 cursor-pointer group relative"
-          >
-            <input 
-              type="file" 
-              id="doctorFileInput" 
-              name="file" 
-              class="hidden" 
-              accept=".pdf,.mp4,.pptx,.docx,.zip,application/pdf,video/mp4,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip"
-            >
-
-            <div id="doctorDropPrompt" class="space-y-2">
-              <div class="w-14 h-14 mx-auto bg-amber-50 group-hover:bg-amber-100 rounded-2xl flex items-center justify-center transition-colors text-pharaoh-goldDark">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                </svg>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">عنوان المحاضرة *</label>
+                <input type="text" id="docInputTitle" required placeholder="مثال: المحاضرة الأولى" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
               </div>
-              <p class="font-bold text-slate-800 text-sm">اسحب الملف وأفلته هنا، أو اضغط للاختيار من جهازك</p>
-              <p class="text-xs text-slate-400">PDF, MP4, PPTX, DOCX, ZIP (أقصى حجم 100 ميجابايت)</p>
-            </div>
-
-            <!-- Selected File Preview -->
-            <div id="doctorSelectedPreview" class="hidden text-right bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div id="doctorTypeBadge" class="w-10 h-10 rounded-xl bg-pharaoh-navy text-pharaoh-goldLight flex items-center justify-center font-bold text-xs uppercase">
-                  PDF
-                </div>
-                <div>
-                  <p id="doctorFileName" class="font-bold text-slate-900 text-sm truncate max-w-xs"></p>
-                  <p id="doctorFileSize" class="text-xs text-slate-500"></p>
-                </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">المادة الدراسية *</label>
+                <select id="docSelectSubject" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white">
+                  <option value="اللوجستيات و سلاسل الإمداد">اللوجستيات و سلاسل الإمداد</option>
+                  <option value="محاسبه التكاليف">محاسبه التكاليف</option>
+                  <option value="قانون تجاري">قانون تجاري</option>
+                  <option value="مبادئ اقتصاد جزئي">مبادئ اقتصاد جزئي</option>
+                  <option value="مبادئ تسويق">مبادئ تسويق</option>
+                  <option value="مقرر اختياري تخصصي">مقرر اختياري تخصصي</option>
+                </select>
               </div>
-              <button type="button" onclick="clearDoctorFile()" class="text-rose-500 hover:bg-rose-50 p-2 rounded-xl transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Metadata Fields -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1.5">عنوان المحاضرة أو التكليف *</label>
-              <input type="text" id="docUploadTitle" required placeholder="مثال: المحاضرة 3 - التكاليف المعيارية" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-pharaoh-gold text-xs">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">الفرقة</label>
+                <select id="docSelectYear" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white">
+                  <option value="الفرقة الثانية">الفرقة الثانية</option>
+                  <option value="الفرقة الأولى">الفرقة الأولى</option>
+                  <option value="الفرقة الثالثة">الفرقة الثالثة</option>
+                  <option value="الفرقة الرابعة">الفرقة الرابعة</option>
+                </select>
+              </div>
             </div>
 
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1.5">المادة الدراسية *</label>
-              <select id="docUploadSubject" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-pharaoh-gold text-xs bg-white">
-                <option value="محاسبه التكاليف" selected>محاسبه التكاليف</option>
-                <option value="اللوجستيات و سلاسل الإمداد">اللوجستيات و سلاسل الإمداد</option>
-                <option value="قانون تجاري">قانون تجاري</option>
-                <option value="مبادئ اقتصاد جزئي">مبادئ اقتصاد جزئي</option>
-                <option value="مبادئ تسويق">مبادئ تسويق</option>
-                <option value="مقرر اختياري تخصصي (MIS)">مقرر اختياري تخصصي (MIS)</option>
-              </select>
+            <!-- Progress Bar -->
+            <div id="docUploadProgressBox" class="hidden space-y-1">
+              <div class="flex justify-between text-[11px] font-bold text-slate-600">
+                <span>جاري الرفع إلى سحابة R2...</span>
+                <span id="docUploadProgressText">0%</span>
+              </div>
+              <div class="w-full bg-slate-200 rounded-full h-2">
+                <div id="docUploadProgressBar" class="bg-pharaoh-gold h-2 rounded-full w-0"></div>
+              </div>
             </div>
 
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1.5">الفرقة الدراسية</label>
-              <select id="docUploadYear" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-pharaoh-gold text-xs bg-white">
-                <option value="الفرقة الثانية" selected>الفرقة الثانية</option>
-                <option value="الفرقة الأولى">الفرقة الأولى</option>
-                <option value="الفرقة الثالثة">الفرقة الثالثة</option>
-                <option value="الفرقة الرابعة">الفرقة الرابعة</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1.5">القسم الأكاديمي</label>
-              <select id="docUploadDept" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-pharaoh-gold text-xs bg-white">
-                <option value="MIS" selected>نظم معلومات إدارية (MIS)</option>
-                <option value="BA">إدارة أعمال (BA)</option>
-                <option value="CS">علوم حاسب (CS)</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1.5">التصنيف</label>
-              <select id="docUploadCategory" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-pharaoh-gold text-xs bg-white">
-                <option value="محاضرة" selected>محاضرة دراسية (Lecture)</option>
-                <option value="واجب / تكليف">واجب وتكليف (Assignment)</option>
-                <option value="شيت وسكاشن">شيت عملي وسكشن (Sheet)</option>
-                <option value="ملخص ومراجعة">ملخص ومراجعة امتحانات</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Upload Progress -->
-          <div id="docProgressBox" class="hidden space-y-2 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-            <div class="flex items-center justify-between text-xs font-bold text-slate-700">
-              <span>جاري الرفع إلى سحابة Cloudflare R2...</span>
-              <span id="docProgressText" class="font-mono text-pharaoh-goldDark">0%</span>
-            </div>
-            <div class="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
-              <div id="docProgressBar" class="bg-pharaoh-gold h-2.5 rounded-full transition-all duration-150 w-0"></div>
-            </div>
-          </div>
-
-          <!-- Submit Button -->
-          <div class="flex justify-end">
             <button 
               type="submit" 
-              id="docSubmitBtn" 
-              class="px-8 py-3.5 bg-gradient-to-r from-pharaoh-navy to-pharaoh-navyDark hover:from-pharaoh-navyLight hover:to-pharaoh-navy text-white font-bold rounded-2xl shadow-lg transition flex items-center gap-2 cursor-pointer text-xs"
+              id="docUploadBtn" 
+              class="px-6 py-2.5 bg-pharaoh-navy hover:bg-pharaoh-navyLight text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-1.5"
             >
-              <span>رفع المحاضرة الآن إلى السحابة</span>
-              <svg class="w-4 h-4 text-pharaoh-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-              </svg>
+              <span>رفع المحاضرة الآن</span>
+            </button>
+          </form>
+        </div>
+
+
+        <!-- ==================================================== -->
+        <!-- ز) تبويب: مسؤول النظام وحذف الحسابات التجريبية         -->
+        <!-- ==================================================== -->
+        <div id="contentAdmin" class="hidden space-y-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-black text-slate-900">لوحة تحكم المسؤول (قاعدة بيانات سوبابيز)</h3>
+              <p class="text-xs text-slate-500">إدارة وحذف الطلاب والتحكم الكامل في حسابات النظام</p>
+            </div>
+            <button onclick="fetchAdminStudentsList()" class="text-xs text-pharaoh-navy font-bold hover:underline">تحديث القائمة</button>
+          </div>
+
+          <!-- زر حذف الـ 20 طالب التجريبي البارز للمسؤول (وفق طلب المستخدم الصريح) -->
+          <div class="bg-rose-950 text-white p-5 rounded-2xl border border-rose-700 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+            <div>
+              <h4 class="text-sm font-extrabold text-rose-200">حذف الطلاب التجريبيين نهائياً من سوبابيز</h4>
+              <p class="text-xs text-rose-300">وفقاً لطلبك: اضغط هنا لمسح الـ 20 حساباً المسجلين كاختبار نهائياً من قاعدة بيانات سوبابيز بنقرة واحدة.</p>
+            </div>
+            <button 
+              type="button" 
+              onclick="triggerPurgeTestAccounts()" 
+              id="btnPurgeAdmin" 
+              class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-black text-xs rounded-xl shadow-md whitespace-nowrap cursor-pointer"
+            >
+              حذف الـ 20 طالب التجريبي نهائياً
             </button>
           </div>
 
-        </form>
+          <!-- جدول الطلاب المباشر من سوبابيز -->
+          <div class="overflow-x-auto rounded-2xl border border-slate-200">
+            <table class="w-full text-right text-xs">
+              <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
+                <tr>
+                  <th class="p-3"># المعرف</th>
+                  <th class="p-3">اسم الطالب (الرباعي)</th>
+                  <th class="p-3">الرقم القومي (14)</th>
+                  <th class="p-3">القسم والفرقة</th>
+                  <th class="p-3">الهاتف</th>
+                  <th class="p-3 text-center">إجراء المسؤول</th>
+                </tr>
+              </thead>
+              <tbody id="tableAdminStudentsBody" class="divide-y divide-slate-100">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
 
-      <!-- Doctor Uploaded Files Grid -->
-      <div class="space-y-4">
-        <div class="flex items-center justify-between">
-          <h3 class="text-base font-bold text-slate-900">سجل الملفات المرفوعة مؤخراً في السحابة</h3>
-          <button onclick="loadDoctorFiles()" class="text-xs text-pharaoh-navy font-bold hover:underline">تحديث القائمة</button>
-        </div>
-        <div id="doctorFilesList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Rendered dynamically -->
-        </div>
-      </div>
-
-    </section>
-
-
-    <!-- ====================================================== -->
-    <!-- 3. ADMIN PORTAL (لوحة المسؤول)                          -->
-    <!-- ====================================================== -->
-    <section id="sectionAdmin" class="space-y-8 hidden">
-
-      <!-- Admin Status & Key Metrics -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">
-            👥
-          </div>
-          <div>
-            <span class="text-xs text-slate-400 block font-semibold">إجمالي الطلاب (سوبابيز)</span>
-            <span id="adminMetricStudents" class="text-xl font-black text-slate-800">--</span>
-          </div>
-        </div>
-
-        <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div class="w-12 h-12 rounded-2xl bg-amber-50 text-pharaoh-goldDark flex items-center justify-center font-bold text-lg">
-            📚
-          </div>
-          <div>
-            <span class="text-xs text-slate-400 block font-semibold">المقررات النشطة</span>
-            <span class="text-xl font-black text-slate-800">6 مقررات</span>
-          </div>
-        </div>
-
-        <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">
-            ☁️
-          </div>
-          <div>
-            <span class="text-xs text-slate-400 block font-semibold">الملفات في R2</span>
-            <span id="adminMetricFiles" class="text-xl font-black text-slate-800">--</span>
-          </div>
-        </div>
-
-        <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg">
-            ⚡
-          </div>
-          <div>
-            <span class="text-xs text-slate-400 block font-semibold">حالة سوبابيز و R2</span>
-            <span id="adminMetricHealth" class="text-xs font-bold text-emerald-600">متصل (Online)</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Test Accounts Cleanup / Purge Box (Requested by User) -->
-      <div class="bg-gradient-to-r from-rose-900 to-red-950 text-white p-6 sm:p-7 rounded-3xl shadow-lg border border-rose-700/50 flex flex-col md:flex-row items-center justify-between gap-5">
-        <div class="space-y-1 text-right">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-rose-400 animate-ping"></span>
-            <h4 class="text-base font-extrabold text-rose-100">تفريغ وحذف الحسابات التجريبية نهائياً من سوبابيز</h4>
-          </div>
-          <p class="text-xs text-rose-200 max-w-2xl leading-relaxed">
-            وفقاً لطلب المسؤول: يمكنك بنقرة واحدة حذف حسابات الطلاب التجريبية الـ 20 التي تم تسجيلها كاختبار، ليتم مسحها نهائياً من جدول قاعدة بيانات سوبابيز بدون رجعة.
-          </p>
-        </div>
-        <button 
-          type="button" 
-          onclick="confirmPurgeTestStudents()" 
-          id="purgeBtn"
-          class="px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center gap-2 whitespace-nowrap cursor-pointer"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-          </svg>
-          حذف الـ 20 طالب التجريبي نهائياً
-        </button>
-      </div>
-
-      <!-- Registered Students Management Table -->
-      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
-              سجل الطلاب في قاعدة بيانات سوبابيز (Live Table: student)
-            </h3>
-            <p class="text-xs text-slate-500">استعراض وحذف وإدارة حسابات الطلاب مع شرط الاسم الرباعي والرقم القومي</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="loadAdminStudents()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-pharaoh-navy font-bold text-xs rounded-xl transition">
-              تحديث البيانات
-            </button>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-right text-xs">
-            <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
-              <tr>
-                <th class="p-3.5"># المعرف</th>
-                <th class="p-3.5">اسم الطالب (الرباعي)</th>
-                <th class="p-3.5">الرقم القومي (14 رقماً)</th>
-                <th class="p-3.5">القسم والفرقة</th>
-                <th class="p-3.5">رقم الهاتف</th>
-                <th class="p-3.5">تاريخ التسجيل</th>
-                <th class="p-3.5 text-center">إجراءات الحذف</th>
-              </tr>
-            </thead>
-            <tbody id="adminStudentsTableBody" class="divide-y divide-slate-100">
-              <!-- Rendered via JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </section>
+    </div>
 
   </main>
 
   <!-- ======================================================== -->
-  <!-- Toast Notification                                       -->
+  <!-- Toast Message                                            -->
   <!-- ======================================================== -->
-  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold transition-all duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2">
+  <div id="toastNotification" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold transition-all duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2">
     <span id="toastIcon">✨</span>
-    <span id="toastMessage">تمت العملية بنجاح!</span>
+    <span id="toastText">تمت العملية بنجاح!</span>
   </div>
 
   <!-- ======================================================== -->
   <!-- Footer                                                   -->
   <!-- ======================================================== -->
-  <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-center text-xs mt-12">
+  <footer class="bg-[#050917] border-t border-white/10 text-slate-400 py-6 text-center text-xs mt-12">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <p class="font-bold text-slate-300">© 2025 معهد الفراعنة العالي لنظم المعلومات الإدارية - جميع الحقوق محفوظة</p>
+      <p class="font-bold text-slate-300">© 2026-2027 أكاديمية معهد الفراعنة العالي لنظم المعلومات والحاسب الآلي وإدارة الأعمال</p>
       <div class="flex items-center gap-3 text-slate-500 font-mono text-[11px]">
-        <span>Supabase DB: Connected</span>
+        <span>Supabase: Connected</span>
         <span>•</span>
         <span>Cloudflare R2: Active</span>
       </div>
@@ -912,264 +862,143 @@
   </footer>
 
   <!-- ======================================================== -->
-  <!-- Client JavaScript Logic                                  -->
+  <!-- JavaScript Logic                                         -->
   <!-- ======================================================== -->
   <script>
-    // Constants & Global State
-    let currentMainTab = 'student';
-    let currentAuthTab = 'login';
-    let currentStudentSubTab = 'card';
-    let loggedInStudent = null;
-    let selectedCourses = ['LOG-201', 'ACC-202', 'LAW-203', 'ECO-204', 'MKT-205']; // Default 5 Year 2 courses (15h)
-    let generatedOtp = null;
-    let otpVerified = false;
-    let allCoursesCatalog = [];
-    let allLoadedFiles = [];
-    let doctorSelectedFile = null;
+    // State
+    let activeStudent = null;
+    let selectedCourses = ['LOG-201', 'ACC-202', 'LAW-203', 'ECO-204', 'MKT-205'];
+    let generatedSampleOtp = null;
 
-    // Toast helper
+    const YEAR_2_COURSES = [
+      { code: 'LOG-201', name: 'اللوجستيات و سلاسل الإمداد', creditHours: 3, doctor: 'أ.د. عبد الرحمن البدري' },
+      { code: 'ACC-202', name: 'محاسبه التكاليف', creditHours: 3, doctor: 'د. طارق المنشاوي' },
+      { code: 'LAW-203', name: 'قانون تجاري', creditHours: 3, doctor: 'المستشار د. محمود عزت' },
+      { code: 'ECO-204', name: 'مبادئ اقتصاد جزئي', creditHours: 3, doctor: 'د. سهير السعدني' },
+      { code: 'MKT-205', name: 'مبادئ تسويق', creditHours: 3, doctor: 'د. منال فوزي' },
+      { code: 'MIS-206', name: 'مقرر اختياري تخصصي: نظم المعلومات', creditHours: 3, doctor: 'د. حازم القاضي' }
+    ];
+
     function showToast(message, icon = '✅') {
-      const toast = document.getElementById('toast');
-      const toastMessage = document.getElementById('toastMessage');
-      const toastIcon = document.getElementById('toastIcon');
-      toastMessage.textContent = message;
-      toastIcon.textContent = icon;
-      toast.classList.remove('opacity-0', 'pointer-events-none');
+      const t = document.getElementById('toastNotification');
+      document.getElementById('toastText').textContent = message;
+      document.getElementById('toastIcon').textContent = icon;
+      t.classList.remove('opacity-0', 'pointer-events-none');
       setTimeout(() => {
-        toast.classList.add('opacity-0', 'pointer-events-none');
+        t.classList.add('opacity-0', 'pointer-events-none');
       }, 3500);
     }
 
-    // Main Tab Switcher (Student, Doctor, Admin)
-    function switchMainTab(tab) {
-      currentMainTab = tab;
+    // Switch Cards Tabs (Login, Register, Doctor, Admin, Lectures, Exams)
+    function switchMainCardTab(tabKey) {
+      const tabs = ['login', 'register', 'doctor', 'admin', 'lectures', 'exams'];
       
-      const secStudent = document.getElementById('sectionStudent');
-      const secDoctor = document.getElementById('sectionDoctor');
-      const secAdmin = document.getElementById('sectionAdmin');
-      const btnStudent = document.getElementById('tabBtnStudent');
-      const btnDoctor = document.getElementById('tabBtnDoctor');
-      const btnAdmin = document.getElementById('tabBtnAdmin');
-
-      secStudent.classList.add('hidden');
-      secDoctor.classList.add('hidden');
-      secAdmin.classList.add('hidden');
-
-      const inactiveClass = 'px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 text-slate-200 hover:text-white hover:bg-white/10';
-      const activeClass = 'px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 bg-pharaoh-gold text-pharaoh-navyDark shadow-md shadow-pharaoh-gold/20';
-
-      btnStudent.className = inactiveClass;
-      btnDoctor.className = inactiveClass;
-      btnAdmin.className = inactiveClass;
-
-      if (tab === 'student') {
-        secStudent.classList.remove('hidden');
-        btnStudent.className = activeClass;
-      } else if (tab === 'doctor') {
-        secDoctor.classList.remove('hidden');
-        btnDoctor.className = activeClass;
-        loadDoctorFiles();
-      } else if (tab === 'admin') {
-        secAdmin.classList.remove('hidden');
-        btnAdmin.className = activeClass;
-        loadAdminStudents();
-      }
-      updateHeaderStatus();
-    }
-
-    // Student Sub-tabs (Card, Credit Hours, Lectures, Exams)
-    function switchStudentSubTab(subTab) {
-      currentStudentSubTab = subTab;
-      const vCard = document.getElementById('stuViewCard');
-      const vCredit = document.getElementById('stuViewCredit');
-      const vLectures = document.getElementById('stuViewLectures');
-      const vExams = document.getElementById('stuViewExams');
-
-      const bCard = document.getElementById('stuSubTabCard');
-      const bCredit = document.getElementById('stuSubTabCredit');
-      const bLectures = document.getElementById('stuSubTabLectures');
-      const bExams = document.getElementById('stuSubTabExams');
-
-      [vCard, vCredit, vLectures, vExams].forEach(el => el.classList.add('hidden'));
-
-      const inactiveBtn = 'px-4 py-2.5 rounded-2xl bg-white text-slate-600 hover:text-pharaoh-navy border border-slate-200 flex items-center gap-2 whitespace-nowrap';
-      const activeBtn = 'px-4 py-2.5 rounded-2xl bg-pharaoh-navy text-pharaoh-goldLight shadow-sm flex items-center gap-2 whitespace-nowrap';
-
-      bCard.className = inactiveBtn;
-      bCredit.className = inactiveBtn;
-      bLectures.className = inactiveBtn;
-      bExams.className = inactiveBtn;
-
-      if (subTab === 'card') {
-        vCard.classList.remove('hidden');
-        bCard.className = activeBtn;
-      } else if (subTab === 'credit') {
-        vCredit.classList.remove('hidden');
-        bCredit.className = activeBtn;
-        renderCreditHoursSection();
-      } else if (subTab === 'lectures') {
-        vLectures.classList.remove('hidden');
-        bLectures.className = activeBtn;
-        loadLecturesList();
-      } else if (subTab === 'exams') {
-        vExams.classList.remove('hidden');
-        bExams.className = activeBtn;
-        loadExamsSchedule();
-      }
-    }
-
-    // Student Login & Register Switcher
-    function switchAuthTab(tab) {
-      currentAuthTab = tab;
-      const tabLogin = document.getElementById('authTabLogin');
-      const tabRegister = document.getElementById('authTabRegister');
-      const formLogin = document.getElementById('studentLoginForm');
-      const formRegister = document.getElementById('studentRegisterForm');
-
-      if (tab === 'login') {
-        tabLogin.className = 'py-4 border-b-2 border-pharaoh-gold text-pharaoh-navyDark bg-white transition';
-        tabRegister.className = 'py-4 text-slate-500 hover:text-pharaoh-navy transition';
-        formLogin.classList.remove('hidden');
-        formRegister.classList.add('hidden');
-      } else {
-        tabRegister.className = 'py-4 border-b-2 border-pharaoh-gold text-pharaoh-navyDark bg-white transition';
-        tabLogin.className = 'py-4 text-slate-500 hover:text-pharaoh-navy transition';
-        formRegister.classList.remove('hidden');
-        formLogin.classList.add('hidden');
-      }
-    }
-
-    // Update Header Status Badge
-    function updateHeaderStatus() {
-      const container = document.getElementById('userHeaderStatus');
-      if (loggedInStudent) {
-        container.innerHTML = `
-          <div class="flex items-center gap-2 bg-pharaoh-gold/20 border border-pharaoh-gold/40 text-pharaoh-goldLight px-3 py-1.5 rounded-xl font-bold">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span class="truncate max-w-[140px] sm:max-w-[200px]">${loggedInStudent.Name}</span>
-            <button onclick="logoutStudent()" class="text-rose-300 hover:text-rose-100 text-[11px] underline mr-1">خروج</button>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div class="flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 px-3 py-1.5 rounded-xl font-semibold">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>بوابة الفراعنة متصلة</span>
-          </div>
-        `;
-      }
-    }
-
-    // --------------------------------------------------------
-    // Student Authentication Logic
-    // --------------------------------------------------------
-
-    // Demo Login Helper
-    function demoStudentLogin() {
-      const demo = {
-        id: 999,
-        Name: 'أحمد محمد علي حسن',
-        Id: 30401010101234,
-        department: 'نظم معلومات إدارية (MIS)',
-        acd_year: 'الفرقة الثانية',
-        phone: 201012345678
+      const contentMap = {
+        login: document.getElementById('contentLogin'),
+        register: document.getElementById('contentRegister'),
+        doctor: document.getElementById('contentDoctor'),
+        admin: document.getElementById('contentAdmin'),
+        lectures: document.getElementById('contentLectures'),
+        exams: document.getElementById('contentExams'),
+        profile: document.getElementById('contentStudentProfile')
       };
-      setLoggedInStudent(demo);
-      showToast('تم تسجيل الدخول بحساب الطالب التجريبي بنجاح!');
-    }
 
-    // Form: Student Login by National ID
-    document.getElementById('studentLoginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const nationalId = document.getElementById('loginNationalId').value.trim();
-      if (!nationalId || nationalId.length !== 14) {
-        showToast('يرجى إدخال الرقم القومي المكون من 14 رقماً صحيحاً', '⚠️');
-        return;
+      // Hide all contents
+      Object.values(contentMap).forEach(el => el && el.classList.add('hidden'));
+
+      // Reset Tab Bar Styles
+      const btnMap = {
+        login: document.getElementById('cardTabLogin'),
+        register: document.getElementById('cardTabRegister'),
+        doctor: document.getElementById('cardTabDoctor'),
+        admin: document.getElementById('cardTabAdmin')
+      };
+
+      const defaultBtnClass = 'py-3.5 sm:py-4 px-2 transition-all flex items-center justify-center gap-1.5 hover:text-white hover:bg-white/5 border-b-2 border-transparent text-slate-300';
+      const activeBtnClass = 'py-3.5 sm:py-4 px-2 transition-all flex items-center justify-center gap-1.5 text-pharaoh-gold bg-[#101D42] border-b-2 border-pharaoh-gold font-black shadow-inner';
+
+      Object.values(btnMap).forEach(btn => {
+        if (btn) btn.className = defaultBtnClass;
+      });
+
+      if (btnMap[tabKey]) {
+        btnMap[tabKey].className = activeBtnClass;
       }
 
-      const submitBtn = document.getElementById('loginSubmitBtn');
-      submitBtn.disabled = true;
-      submitBtn.classList.add('opacity-50');
-
-      try {
-        const res = await fetch(`/api/student/login?nationalId=${encodeURIComponent(nationalId)}`);
-        const data = await res.json();
-        if (res.ok && data.success && data.student) {
-          setLoggedInStudent(data.student);
-          showToast(`أهلاً بك يا ${data.student.Name}! تم تسجيل الدخول بنجاح.`);
+      if (tabKey === 'login') {
+        if (activeStudent) {
+          contentMap.profile.classList.remove('hidden');
         } else {
-          // If not in database yet, inform user
-          showToast(data.error || 'لم يتم العثور على طالب مسجل بهذا الرقم القومي', '⚠️');
+          contentMap.login.classList.remove('hidden');
         }
-      } catch (err) {
-        showToast('تعذر الاتصال بالخادم، يرجى المحاولة مرة أخرى', '❌');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('opacity-50');
+      } else if (tabKey === 'register') {
+        contentMap.register.classList.remove('hidden');
+      } else if (tabKey === 'doctor') {
+        contentMap.doctor.classList.remove('hidden');
+      } else if (tabKey === 'admin') {
+        contentMap.admin.classList.remove('hidden');
+        fetchAdminStudentsList();
+      } else if (tabKey === 'lectures') {
+        contentMap.lectures.classList.remove('hidden');
+        fetchLecturesForPortal();
+      } else if (tabKey === 'exams') {
+        contentMap.exams.classList.remove('hidden');
+        fetchExamsForPortal();
       }
-    });
+    }
 
-    // SMS OTP Simulation for Student Registration
-    function sendPhoneOtp() {
-      const phone = document.getElementById('regPhone').value.trim();
+    // OTP Trigger
+    function triggerPhoneOtp() {
+      const phone = document.getElementById('inputRegPhone').value.trim();
       if (!phone || phone.length < 10) {
-        showToast('يرجى إدخال رقم هاتف صحيح أولاً', '⚠️');
+        showToast('يرجى كتابة رقم هاتف صحيح أولاً', '⚠️');
         return;
       }
 
-      generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-      otpVerified = false;
-
-      const otpBox = document.getElementById('otpBox');
-      const demoOtpHint = document.getElementById('demoOtpHint');
-      const otpStatusMsg = document.getElementById('otpStatusMsg');
-
-      otpBox.classList.remove('hidden');
-      demoOtpHint.textContent = `كود التحقق المرسل: ${generatedOtp}`;
-      otpStatusMsg.textContent = 'تم إرسال كود التحقق السري إلى هاتفك بنجاح.';
-      showToast(`تم إرسال رمز التحقق (${generatedOtp})`, '📱');
+      generatedSampleOtp = Math.floor(100000 + Math.random() * 900000).toString();
+      const box = document.getElementById('boxOtpVerification');
+      const sample = document.getElementById('labelOtpSample');
+      
+      box.classList.remove('hidden');
+      sample.textContent = `كود التحقق المجاني: ${generatedSampleOtp}`;
+      showToast(`تم إرسال كود التحقق (${generatedSampleOtp})`, '📱');
     }
 
-    function verifyOtpCode() {
-      const input = document.getElementById('regOtpInput').value.trim();
-      const otpStatusMsg = document.getElementById('otpStatusMsg');
-
-      if (input === generatedOtp) {
-        otpVerified = true;
-        otpStatusMsg.innerHTML = '<span class="text-emerald-700 font-bold">✓ تم التحقق من رقم الهاتف بنجاح!</span>';
-        showToast('تم تأكيد رقم الهاتف بنجاح!', '✅');
+    function confirmOtpVerification() {
+      const code = document.getElementById('inputOtpVerify').value.trim();
+      if (code === generatedSampleOtp) {
+        showToast('تم تأكيد كود التحقق بنجاح!', '✅');
       } else {
-        otpStatusMsg.innerHTML = '<span class="text-rose-600 font-bold">✕ كود التحقق غير صحيح، حاول ثانية.</span>';
-        showToast('كود التحقق غير صحيح', '❌');
+        showToast('كود التحقق غير صحيح، يرجى المحاولة ثانية', '❌');
       }
     }
 
-    // Form: Student Registration with Quadrilateral Name Validation
-    document.getElementById('studentRegisterForm').addEventListener('submit', async (e) => {
+    // New Student Registration Handler
+    document.getElementById('formNewStudentReg').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('regFullName').value.trim();
-      const nationalId = document.getElementById('regNationalId').value.trim();
-      const phone = document.getElementById('regPhone').value.trim();
-      const dept = document.getElementById('regDept').value;
-      const year = document.getElementById('regYear').value;
+      const name = document.getElementById('inputRegName').value.trim();
+      const nationalId = document.getElementById('inputRegNationalId').value.trim();
+      const dept = document.getElementById('selectRegDept').value;
+      const year = document.getElementById('selectRegYear').value;
+      const phone = document.getElementById('inputRegPhone').value.trim();
 
-      // 1. Quadrilateral Name Validation (الاسم الرباعي)
-      const parts = name.split(/\s+/).filter(Boolean);
-      if (parts.length < 4) {
-        showToast('شرط إلزامي: يجب أن يكون اسم الطالب رباعياً على الأقل (أربعة أسماء)!', '⚠️');
-        document.getElementById('regNameValidation').classList.add('text-rose-500', 'font-bold');
+      // Validate 4 parts name
+      const nameParts = name.split(/\s+/).filter(Boolean);
+      if (nameParts.length < 4) {
+        showToast('شرط إلزامي: يجب أن يكون اسم الطالب رباعياً على الأقل!', '⚠️');
+        document.getElementById('regNameError').className = 'text-[11px] text-rose-500 font-bold mt-1';
         return;
       }
 
-      // 2. National ID validation
+      // Validate National ID
       if (!/^\d{14}$/.test(nationalId)) {
         showToast('الرقم القومي يجب أن يتكون من 14 رقماً بالضبط!', '⚠️');
         return;
       }
 
-      const submitBtn = document.getElementById('regSubmitBtn');
-      submitBtn.disabled = true;
-      submitBtn.classList.add('opacity-50');
+      const btn = document.getElementById('btnSubmitRegistration');
+      btn.disabled = true;
+      btn.classList.add('opacity-50');
 
       try {
         const payload = {
@@ -1188,331 +1017,173 @@
 
         const data = await res.json();
         if (res.ok && data.success) {
-          showToast('تم اعتماد وتسجيل الطالب في قاعدة البيانات بنجاح!');
-          setLoggedInStudent(data.student);
+          showToast('تم إتمام القيد في سوبابيز وإصدار الكارنيه الجامعي بنجاح!', '🎉');
+          renderStudentProfile(data.student);
         } else {
           showToast(data.error || 'تعذر تسجيل الطالب', '❌');
         }
       } catch (err) {
-        showToast('حدث خطأ أثناء إرسال البيانات', '❌');
+        showToast('حدث خطأ في الاتصال بالخادم', '❌');
       } finally {
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('opacity-50');
+        btn.disabled = false;
+        btn.classList.remove('opacity-50');
       }
     });
 
-    // Set Logged In Student & Render Dashboard
-    function setLoggedInStudent(student) {
-      loggedInStudent = student;
-      localStorage.setItem('pharaoh_active_student', JSON.stringify(student));
+    // Direct Login Form
+    document.getElementById('formStudentLoginDirect').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('inputDirectLoginId').value.trim();
+      if (!id || id.length !== 14) {
+        showToast('أدخل 14 رقماً للرقم القومي', '⚠️');
+        return;
+      }
 
-      document.getElementById('studentGuestView').classList.add('hidden');
-      document.getElementById('studentAuthView').classList.remove('hidden');
+      try {
+        const res = await fetch(`/api/student/login?nationalId=${encodeURIComponent(id)}`);
+        const data = await res.json();
+        if (res.ok && data.success && data.student) {
+          showToast(`أهلاً بك يا ${data.student.Name}!`);
+          renderStudentProfile(data.student);
+        } else {
+          showToast(data.error || 'لم يتم العثور على طالب بهذا الرقم القومي', '⚠️');
+        }
+      } catch {
+        showToast('خطأ في الاتصال بقاعدة البيانات', '❌');
+      }
+    });
 
-      // Populate Header Banner
-      document.getElementById('authStudentName').textContent = student.Name;
-      document.getElementById('authStudentDept').textContent = student.department;
-      document.getElementById('authStudentYear').textContent = student.acd_year;
-      document.getElementById('authStudentId').textContent = student.Id;
-      document.getElementById('authStudentAvatarInitial').textContent = student.Name.charAt(0);
+    // Render Student Profile & Card
+    function renderStudentProfile(student) {
+      activeStudent = student;
+      localStorage.setItem('pharaoh_web_student', JSON.stringify(student));
 
-      // Populate Digital Card
-      document.getElementById('cardStudentName').textContent = student.Name;
-      document.getElementById('cardNationalId').textContent = student.Id;
-      document.getElementById('cardDept').textContent = student.department;
-      document.getElementById('cardYear').textContent = student.acd_year;
-      document.getElementById('cardAvatarLetter').textContent = student.Name.charAt(0);
-      document.getElementById('cardRegCode').textContent = `PHA-${String(student.id || student.Id).slice(-4)}-2025`;
+      document.getElementById('contentRegister').classList.add('hidden');
+      document.getElementById('contentLogin').classList.add('hidden');
+      document.getElementById('contentStudentProfile').classList.remove('hidden');
 
-      updateHeaderStatus();
-      switchStudentSubTab('card');
+      // Banner Labels
+      document.getElementById('labelStudentName').textContent = student.Name;
+      document.getElementById('labelStudentDept').textContent = student.department;
+      document.getElementById('labelStudentYear').textContent = student.acd_year;
+      document.getElementById('labelStudentId').textContent = student.Id;
+      document.getElementById('badgeAvatarLetter').textContent = student.Name.charAt(0);
+
+      // Card Labels
+      document.getElementById('cardNameVal').textContent = student.Name;
+      document.getElementById('cardIdVal').textContent = student.Id;
+      document.getElementById('cardDeptVal').textContent = student.department;
+      document.getElementById('cardYearVal').textContent = student.acd_year;
+      document.getElementById('cardCodeVal').textContent = `PHA-2026-${String(student.id || student.Id).slice(-4)}`;
+
+      renderStudentCoursesSelection();
     }
 
-    function logoutStudent() {
-      loggedInStudent = null;
-      localStorage.removeItem('pharaoh_active_student');
-      document.getElementById('studentAuthView').classList.add('hidden');
-      document.getElementById('studentGuestView').classList.remove('hidden');
-      updateHeaderStatus();
+    function logoutActiveStudent() {
+      activeStudent = null;
+      localStorage.removeItem('pharaoh_web_student');
+      document.getElementById('contentStudentProfile').classList.add('hidden');
+      switchMainCardTab('register');
       showToast('تم تسجيل الخروج بنجاح');
     }
 
-    function scrollToSection(id) {
-      if (id === 'cardArea') switchStudentSubTab('card');
-      else if (id === 'creditSection') switchStudentSubTab('credit');
-    }
+    // Courses Selection in Student Profile
+    function renderStudentCoursesSelection() {
+      const container = document.getElementById('gridStudentCourses');
+      let totalH = 0;
 
-    // --------------------------------------------------------
-    // Credit Hour System Logic (18 Hours Max)
-    // --------------------------------------------------------
-    async function loadCoursesCatalog() {
-      try {
-        const res = await fetch('/api/courses');
-        const data = await res.json();
-        if (data.success && data.courses) {
-          allCoursesCatalog = data.courses;
-          renderCreditHoursSection();
-        }
-      } catch {
-        // Fallback default
-        allCoursesCatalog = [
-          { code: 'LOG-201', name: 'اللوجستيات و سلاسل الإمداد', creditHours: 3, doctor: 'أ.د. عبد الرحمن البدري', day: 'الأحد', time: '09:00 ص' },
-          { code: 'ACC-202', name: 'محاسبه التكاليف', creditHours: 3, doctor: 'د. طارق المنشاوي', day: 'الإثنين', time: '10:00 ص' },
-          { code: 'LAW-203', name: 'قانون تجاري', creditHours: 3, doctor: 'المستشار د. محمود عزت', day: 'الثلاثاء', time: '09:00 ص' },
-          { code: 'ECO-204', name: 'مبادئ اقتصاد جزئي', creditHours: 3, doctor: 'د. سهير السعدني', day: 'الأربعاء', time: '11:00 ص' },
-          { code: 'MKT-205', name: 'مبادئ تسويق', creditHours: 3, doctor: 'د. منال فوزي', day: 'الخميس', time: '09:00 ص' },
-          { code: 'MIS-206', name: 'مقرر اختياري تخصصي: نظم المعلومات', creditHours: 3, doctor: 'د. حازم القاضي', day: 'السبت', time: '10:00 ص' }
-        ];
-        renderCreditHoursSection();
-      }
-    }
-
-    function renderCreditHoursSection() {
-      if (allCoursesCatalog.length === 0) return;
-
-      const container = document.getElementById('creditCoursesGrid');
-      let totalHours = 0;
-
-      container.innerHTML = allCoursesCatalog.map(c => {
+      container.innerHTML = YEAR_2_COURSES.map(c => {
         const isChecked = selectedCourses.includes(c.code);
-        if (isChecked) totalHours += c.creditHours;
+        if (isChecked) totalH += c.creditHours;
 
         return `
-          <div class="bg-white p-5 rounded-2xl border ${isChecked ? 'border-pharaoh-gold bg-amber-50/20 shadow-md' : 'border-slate-200'} transition flex flex-col justify-between gap-3">
-            <div class="flex items-start justify-between gap-3">
-              <div>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-lg">${c.code}</span>
-                  <span class="text-xs bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded-md">${c.creditHours} ساعات</span>
-                </div>
-                <h5 class="font-extrabold text-slate-900 text-sm mt-1.5">${c.name}</h5>
-                <p class="text-xs text-slate-500 mt-0.5">المحاضر: ${c.doctor || 'عضو هيئة التدريس'}</p>
-                <p class="text-[11px] text-slate-400 mt-0.5">${c.day || ''} • ${c.time || ''} • ${c.hall || 'مدرج 2'}</p>
-              </div>
-
-              <!-- Selection Checkbox Button -->
-              <button 
-                type="button" 
-                onclick="toggleCourse('${c.code}', ${c.creditHours})" 
-                class="w-8 h-8 rounded-xl flex items-center justify-center transition-all ${isChecked ? 'bg-pharaoh-gold text-pharaoh-navyDark font-black' : 'border-2 border-slate-300 text-transparent'}"
-              >
-                ✓
-              </button>
+          <div class="p-3.5 rounded-xl border ${isChecked ? 'border-pharaoh-gold bg-amber-50/30' : 'border-slate-200'} flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded">${c.code}</span>
+              <p class="font-bold text-xs text-slate-900 mt-1">${c.name}</p>
+              <p class="text-[10px] text-slate-400">${c.doctor} • 3 ساعات</p>
             </div>
+            <button 
+              type="button" 
+              onclick="toggleSubjectSelection('${c.code}', ${c.creditHours})"
+              class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs ${isChecked ? 'bg-pharaoh-gold text-pharaoh-navyDark' : 'border border-slate-300 text-transparent'}"
+            >
+              ✓
+            </button>
           </div>
         `;
       }).join('');
 
-      // Update Total Hours & Progress
-      document.getElementById('creditHoursCounter').textContent = totalHours;
-      const percent = Math.min(Math.round((totalHours / 18) * 100), 100);
-      document.getElementById('creditProgressPercent').textContent = `${percent}%`;
-      const pBar = document.getElementById('creditProgressBar');
-      pBar.style.width = `${percent}%`;
-
-      const alertEl = document.getElementById('creditLimitAlert');
-      if (totalHours === 18) {
-        alertEl.innerHTML = '<span class="text-emerald-600 font-bold">✓ تم استيفاء الحد الأقصى للساعات المعتمدة (18 ساعة) بنجاح.</span>';
-      } else if (totalHours > 18) {
-        alertEl.innerHTML = '<span class="text-rose-600 font-bold">⚠️ تحذير: لقد تجاوزت الحد الأقصى (18 ساعة). يرجى إلغاء مادة.</span>';
-      } else {
-        alertEl.innerHTML = `<span class="text-slate-500">يمكنك إضافة مقرر إضافي (متبقي ${18 - totalHours} ساعات للوصول للحد الأقصى).</span>`;
-      }
+      document.getElementById('valTotalHours').textContent = totalH;
     }
 
-    function toggleCourse(code, hours) {
+    function toggleSubjectSelection(code, hours) {
       if (selectedCourses.includes(code)) {
         selectedCourses = selectedCourses.filter(c => c !== code);
       } else {
-        // Calculate new total
-        let currentTotal = 0;
-        allCoursesCatalog.forEach(c => {
-          if (selectedCourses.includes(c.code)) currentTotal += c.creditHours;
-        });
-        if (currentTotal + hours > 18) {
-          showToast('لا يمكن التسجيل! الحد الأقصى للفصل الدراسي هو 18 ساعة معتمدة.', '⚠️');
+        let cur = selectedCourses.length * 3;
+        if (cur + hours > 18) {
+          showToast('الحد الأقصى هو 18 ساعة معتمدة للفصل الدراسي!', '⚠️');
           return;
         }
         selectedCourses.push(code);
       }
-      renderCreditHoursSection();
+      renderStudentCoursesSelection();
     }
 
-    function saveCourseRegistration() {
-      localStorage.setItem('pharaoh_registered_courses', JSON.stringify(selectedCourses));
-      showToast('تم حفظ واعتماد تسجيل المقررات بنجاح في الإرشاد الأكاديمي!');
+    function saveStudentCourseSelection() {
+      showToast('تم حفظ واعتماد الساعات المعتمدة في سجل الطالب الأكاديمي!');
     }
 
-    // --------------------------------------------------------
-    // Student Lectures & Exams
-    // --------------------------------------------------------
-    async function loadLecturesList() {
-      try {
-        const res = await fetch('/api/files');
-        const data = await res.json();
-        if (data.success && data.files) {
-          allLoadedFiles = data.files;
-          renderStudentLectures(data.files);
-        }
-      } catch {
-        renderStudentLectures([]);
-      }
+    // Quick Demo Logins
+    function demoLoginStudent() {
+      const demo = {
+        id: 101,
+        Name: 'أحمد محمود مصطفى السعيد',
+        Id: 30205120101543,
+        department: 'علوم حاسب (CS)',
+        acd_year: 'الفرقة الثانية',
+        phone: 201012345678
+      };
+      renderStudentProfile(demo);
+      showToast('تم الدخول كطالب تجريبي (أحمد محمود مصطفى)');
     }
 
-    function filterStudentLectures() {
-      const q = document.getElementById('studentSearchLectures').value.trim().toLowerCase();
-      if (!q) {
-        renderStudentLectures(allLoadedFiles);
-        return;
-      }
-      const filtered = allLoadedFiles.filter(item => {
-        const title = (item.metadata ? item.metadata.title : item.fileName).toLowerCase();
-        const subject = (item.metadata && item.metadata.subjectName ? item.metadata.subjectName : '').toLowerCase();
-        return title.includes(q) || subject.includes(q);
-      });
-      renderStudentLectures(filtered);
+    function demoLoginDoctor() {
+      switchMainCardTab('doctor');
+      showToast('تم الانتقال إلى قاعة رفع المحاضرات للدكاترة');
     }
 
-    function renderStudentLectures(list) {
-      const container = document.getElementById('studentLecturesGrid');
-      if (!list || list.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full p-8 text-center bg-white rounded-3xl border border-slate-200 text-slate-400">
-            <p class="font-bold text-sm">لا توجد محاضرات متاحة حالياً</p>
-            <p class="text-xs">سيقوم أعضاء هيئة التدريس برفع المحاضرات قريباً إلى السحابة</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = list.map(item => {
-        const ext = (item.extension || 'PDF').toUpperCase();
-        let badgeColor = 'bg-rose-600';
-        if (ext === 'MP4') badgeColor = 'bg-purple-600';
-        else if (ext === 'PPTX') badgeColor = 'bg-orange-500';
-        else if (ext === 'DOCX') badgeColor = 'bg-blue-600';
-        else if (ext === 'ZIP') badgeColor = 'bg-emerald-600';
-
-        const title = item.metadata ? item.metadata.title : item.fileName;
-        const sub = item.metadata ? `${item.metadata.subjectName} (${item.metadata.yearGroup})` : 'مادة الفرقة الثانية';
-
-        return `
-          <div class="bg-white p-5 rounded-2xl border border-slate-200 hover:shadow-md transition flex flex-col justify-between gap-3">
-            <div class="flex items-start gap-3">
-              <div class="w-10 h-10 rounded-xl ${badgeColor} text-white flex items-center justify-center font-bold text-xs uppercase flex-shrink-0">
-                ${ext}
-              </div>
-              <div class="overflow-hidden flex-1">
-                <h5 class="font-bold text-slate-900 text-sm truncate" title="${title}">${title}</h5>
-                <p class="text-xs text-slate-500 truncate">${sub}</p>
-                <p class="text-[11px] text-slate-400 font-mono mt-0.5">${item.formattedSize || ''}</p>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
-              <a 
-                href="${item.downloadUrl}" 
-                target="_blank" 
-                class="flex-1 py-2 px-3 bg-pharaoh-navy hover:bg-pharaoh-navyLight text-pharaoh-goldLight rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-center"
-              >
-                <span>تحميل المحاضرة</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        `;
-      }).join('');
+    function demoLoginAdmin() {
+      switchMainCardTab('admin');
+      showToast('تم الانتقال إلى لوحة تحكم المسؤول وحذف الطلاب');
     }
 
-    async function loadExamsSchedule() {
-      try {
-        const res = await fetch('/api/exams');
-        const data = await res.json();
-        const tbody = document.getElementById('examsTableBody');
-        if (data.success && data.schedule) {
-          tbody.innerHTML = data.schedule.map(ex => `
-            <tr class="hover:bg-slate-50 transition">
-              <td class="p-4 font-mono font-bold text-slate-900">${ex.code}</td>
-              <td class="p-4 font-bold text-slate-900">${ex.subject}</td>
-              <td class="p-4">${ex.day} (${ex.date})</td>
-              <td class="p-4 text-pharaoh-goldDark font-bold">${ex.time}</td>
-              <td class="p-4">${ex.hall}</td>
-              <td class="p-4 font-semibold text-slate-700">${ex.committee}</td>
-            </tr>
-          `).join('');
-        }
-      } catch (err) {
-        console.error('خطأ جلب الامتحانات:', err);
-      }
-    }
-
-    // --------------------------------------------------------
-    // Doctor Portal Upload Logic (Cloudflare R2)
-    // --------------------------------------------------------
-    const docDropZone = document.getElementById('doctorDropZone');
-    const docFileInput = document.getElementById('doctorFileInput');
-
-    docDropZone.addEventListener('click', (e) => {
-      docFileInput.click();
-    });
-
-    docFileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        selectDoctorFile(e.target.files[0]);
-      }
-    });
-
-    function selectDoctorFile(file) {
-      doctorSelectedFile = file;
-      document.getElementById('doctorFileName').textContent = file.name;
-      document.getElementById('doctorFileSize').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-      
-      const ext = file.name.split('.').pop().toUpperCase();
-      document.getElementById('doctorTypeBadge').textContent = ext;
-
-      document.getElementById('doctorDropPrompt').classList.add('hidden');
-      document.getElementById('doctorSelectedPreview').classList.remove('hidden');
-
-      const titleInput = document.getElementById('docUploadTitle');
-      if (!titleInput.value) {
-        titleInput.value = file.name.substring(0, file.name.lastIndexOf('.'));
-      }
-    }
-
-    function clearDoctorFile() {
-      doctorSelectedFile = null;
-      docFileInput.value = '';
-      document.getElementById('doctorDropPrompt').classList.remove('hidden');
-      document.getElementById('doctorSelectedPreview').classList.add('hidden');
-    }
-
-    document.getElementById('doctorUploadForm').addEventListener('submit', (e) => {
+    // Doctor Upload Form
+    document.getElementById('formDoctorUploadDirect').addEventListener('submit', (e) => {
       e.preventDefault();
-      if (!doctorSelectedFile) {
-        showToast('يرجى اختيار ملف المحاضرة أولاً!', '⚠️');
+      const fileInput = document.getElementById('fileDoctorInput');
+      if (!fileInput.files.length) {
+        showToast('اختر ملفاً لرفعه', '⚠️');
         return;
       }
 
+      const file = fileInput.files[0];
       const formData = new FormData();
-      formData.append('file', doctorSelectedFile);
-      formData.append('title', document.getElementById('docUploadTitle').value.trim());
-      formData.append('subjectName', document.getElementById('docUploadSubject').value);
-      formData.append('yearGroup', document.getElementById('docUploadYear').value);
-      formData.append('department', document.getElementById('docUploadDept').value);
-      formData.append('category', document.getElementById('docUploadCategory').value);
+      formData.append('file', file);
+      formData.append('title', document.getElementById('docInputTitle').value.trim());
+      formData.append('subjectName', document.getElementById('docSelectSubject').value);
+      formData.append('yearGroup', document.getElementById('docSelectYear').value);
 
-      const pBox = document.getElementById('docProgressBox');
-      const pBar = document.getElementById('docProgressBar');
-      const pText = document.getElementById('docProgressText');
-      const sBtn = document.getElementById('docSubmitBtn');
+      const pBox = document.getElementById('docUploadProgressBox');
+      const pBar = document.getElementById('docUploadProgressBar');
+      const pText = document.getElementById('docUploadProgressText');
+      const btn = document.getElementById('docUploadBtn');
 
       pBox.classList.remove('hidden');
       pBar.style.width = '0%';
       pText.textContent = '0%';
-      sBtn.disabled = true;
-      sBtn.classList.add('opacity-50');
+      btn.disabled = true;
 
       const xhr = new XMLHttpRequest();
       xhr.open('POST', '/api/upload', true);
@@ -1526,130 +1197,126 @@
       };
 
       xhr.onload = () => {
-        sBtn.disabled = false;
-        sBtn.classList.remove('opacity-50');
+        btn.disabled = false;
         try {
           const res = JSON.parse(xhr.responseText);
           if (xhr.status === 200 && res.success) {
             showToast('تم رفع المحاضرة بنجاح إلى Cloudflare R2!');
-            clearDoctorFile();
-            loadDoctorFiles();
+            fileInput.value = '';
+            document.getElementById('docInputTitle').value = '';
+            pBox.classList.add('hidden');
           } else {
-            showToast(res.error || 'فشل رفع الملف', '❌');
+            showToast(res.error || 'فشل الرفع', '❌');
           }
         } catch {
           showToast('حدث خطأ أثناء معالجة الرفع', '❌');
         }
       };
 
-      xhr.onerror = () => {
-        sBtn.disabled = false;
-        sBtn.classList.remove('opacity-50');
-        showToast('تعذر الاتصال بالخادم', '❌');
-      };
-
       xhr.send(formData);
     });
 
-    async function loadDoctorFiles() {
+    // Fetch Lectures
+    async function fetchLecturesForPortal() {
       try {
         const res = await fetch('/api/files');
         const data = await res.json();
-        const container = document.getElementById('doctorFilesList');
+        const container = document.getElementById('portalLecturesList');
         if (data.success && data.files && data.files.length > 0) {
           container.innerHTML = data.files.map(f => `
-            <div class="bg-white p-4 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 shadow-sm">
-              <div class="truncate">
-                <p class="font-bold text-slate-800 text-xs truncate">${f.metadata?.title || f.fileName}</p>
+            <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
+              <div>
+                <p class="font-bold text-xs text-slate-800">${f.metadata?.title || f.fileName}</p>
                 <p class="text-[11px] text-slate-400 font-mono">${f.formattedSize} • ${f.metadata?.subjectName || 'مادة'}</p>
               </div>
-              <div class="flex items-center gap-1.5 flex-shrink-0">
-                <a href="${f.downloadUrl}" target="_blank" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-pharaoh-navy rounded-lg text-xs font-bold">
-                  تحميل
-                </a>
-              </div>
+              <a href="${f.downloadUrl}" target="_blank" class="px-3 py-1.5 bg-pharaoh-navy text-pharaoh-goldLight font-bold text-xs rounded-xl hover:bg-pharaoh-navyLight transition">
+                تحميل
+              </a>
             </div>
           `).join('');
-          document.getElementById('adminMetricFiles').textContent = `${data.files.length} ملف`;
         } else {
-          container.innerHTML = '<p class="text-xs text-slate-400 col-span-full text-center py-4">لا توجد ملفات مرفوعة حالياً</p>';
-          document.getElementById('adminMetricFiles').textContent = '0 ملف';
+          container.innerHTML = '<p class="text-xs text-slate-400 col-span-full text-center py-6">لا توجد محاضرات مرفوعة حالياً</p>';
         }
       } catch {}
     }
 
-    // --------------------------------------------------------
-    // Admin Dashboard Logic (Supabase Student Management)
-    // --------------------------------------------------------
-    async function loadAdminStudents() {
+    // Fetch Exams
+    async function fetchExamsForPortal() {
+      try {
+        const res = await fetch('/api/exams');
+        const data = await res.json();
+        const tbody = document.getElementById('tableExamsBody');
+        if (data.success && data.schedule) {
+          tbody.innerHTML = data.schedule.map(ex => `
+            <tr class="hover:bg-slate-50 transition">
+              <td class="p-3 font-mono font-bold">${ex.code}</td>
+              <td class="p-3 font-bold">${ex.subject}</td>
+              <td class="p-3">${ex.day} (${ex.date})</td>
+              <td class="p-3 text-pharaoh-navy font-bold">${ex.time}</td>
+              <td class="p-3">${ex.hall}</td>
+              <td class="p-3 text-slate-600 font-semibold">${ex.committee}</td>
+            </tr>
+          `).join('');
+        }
+      } catch {}
+    }
+
+    // Admin Students
+    async function fetchAdminStudentsList() {
       try {
         const res = await fetch('/api/students');
         const data = await res.json();
-        const tbody = document.getElementById('adminStudentsTableBody');
-        const countMetric = document.getElementById('adminMetricStudents');
-
+        const tbody = document.getElementById('tableAdminStudentsBody');
         if (data.success && data.students) {
-          countMetric.textContent = `${data.students.length} طالب`;
           if (data.students.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-400 text-xs">لا يوجد طلاب مسجلون في قاعدة البيانات حالياً</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-400">لا يوجد طلاب في قاعدة البيانات حالياً</td></tr>';
             return;
           }
 
-          tbody.innerHTML = data.students.map(s => {
-            const dateStr = s.created_at ? new Date(s.created_at).toLocaleDateString('ar-EG') : 'حديثاً';
-            return `
-              <tr class="hover:bg-slate-50 transition">
-                <td class="p-3.5 font-mono font-bold text-slate-500">${s.id}</td>
-                <td class="p-3.5 font-bold text-slate-900">${s.Name}</td>
-                <td class="p-3.5 font-mono text-slate-700">${s.Id}</td>
-                <td class="p-3.5 text-slate-600">${s.department || ''} - ${s.acd_year || ''}</td>
-                <td class="p-3.5 font-mono text-slate-500">${s.phone || 'غير مسجل'}</td>
-                <td class="p-3.5 text-slate-400">${dateStr}</td>
-                <td class="p-3.5 text-center">
-                  <button 
-                    onclick="deleteSingleStudent(${s.id}, '${s.Name.replace(/'/g, "\\'")}')" 
-                    class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold rounded-lg text-xs transition"
-                    title="حذف نهائي من سوبابيز"
-                  >
-                    حذف نهائي
-                  </button>
-                </td>
-              </tr>
-            `;
-          }).join('');
+          tbody.innerHTML = data.students.map(s => `
+            <tr class="hover:bg-slate-50 transition">
+              <td class="p-3 font-mono font-bold text-slate-500">${s.id}</td>
+              <td class="p-3 font-bold text-slate-900">${s.Name}</td>
+              <td class="p-3 font-mono text-slate-700">${s.Id}</td>
+              <td class="p-3 text-slate-600">${s.department || ''} - ${s.acd_year || ''}</td>
+              <td class="p-3 font-mono text-slate-500">${s.phone || 'غير مسجل'}</td>
+              <td class="p-3 text-center">
+                <button 
+                  onclick="deleteStudentDirect(${s.id}, '${s.Name.replace(/'/g, "\\'")}')" 
+                  class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold rounded-lg text-xs transition"
+                >
+                  حذف نهائي
+                </button>
+              </td>
+            </tr>
+          `).join('');
         }
-      } catch (err) {
-        console.error('خطأ جلب بيانات الطلاب للمسؤول:', err);
-      }
+      } catch {}
     }
 
-    async function deleteSingleStudent(id, name) {
-      if (!confirm(`هل أنت متأكد من حذف الطالب (${name}) نهائياً من قاعدة بيانات سوبابيز؟`)) {
-        return;
-      }
+    async function deleteStudentDirect(id, name) {
+      if (!confirm(`هل تريد بالتأكيد حذف الطالب (${name}) نهائياً من قاعدة بيانات سوبابيز؟`)) return;
 
       try {
         const res = await fetch(`/api/students/${id}`, { method: 'DELETE' });
         const data = await res.json();
         if (res.ok && data.success) {
           showToast(`تم حذف الطالب (${name}) نهائياً من سوبابيز!`);
-          loadAdminStudents();
+          fetchAdminStudentsList();
         } else {
           showToast(data.error || 'تعذر حذف الطالب', '❌');
         }
       } catch {
-        showToast('حدث خطأ أثناء محاولة الحذف', '❌');
+        showToast('حدث خطأ في الحذف', '❌');
       }
     }
 
-    async function confirmPurgeTestStudents() {
-      if (!confirm('تحذير: هل أنت متأكد من حذف الحسابات التجريبية الـ 20 نهائياً من قاعدة بيانات سوبابيز؟ هذا الإجراء لا يمكن التراجع عنه.')) {
-        return;
-      }
+    async function triggerPurgeTestAccounts() {
+      if (!confirm('تحذير نهائي: هل تريد حذف الـ 20 حساباً التجريبية نهائياً من سوبابيز؟')) return;
 
-      const purgeBtn = document.getElementById('purgeBtn');
-      purgeBtn.disabled = true;
-      purgeBtn.classList.add('opacity-50');
+      const btn = document.getElementById('btnPurgeAdmin');
+      btn.disabled = true;
+      btn.classList.add('opacity-50');
 
       try {
         const res = await fetch('/api/students/purge-test', {
@@ -1659,45 +1326,29 @@
         });
         const data = await res.json();
         if (res.ok && data.success) {
-          showToast(data.message || 'تم تفريغ وحذف الحسابات التجريبية بنجاح!', '🗑️');
-          loadAdminStudents();
+          showToast(data.message || 'تم تفريغ وحذف الحسابات التجريبية نهائياً!', '🗑️');
+          fetchAdminStudentsList();
         } else {
-          showToast(data.error || 'تعذر حذف الحسابات', '❌');
+          showToast(data.error || 'تعذر الحذف', '❌');
         }
       } catch {
-        showToast('حدث خطأ أثناء تفريغ الحسابات', '❌');
+        showToast('حدث خطأ أثناء الحذف', '❌');
       } finally {
-        purgeBtn.disabled = false;
-        purgeBtn.classList.remove('opacity-50');
+        btn.disabled = false;
+        btn.classList.remove('opacity-50');
       }
     }
 
-    // Initial Load & Session Recovery
+    // Auto Load
     window.addEventListener('DOMContentLoaded', () => {
-      // Restore active student session if exists
-      const saved = localStorage.getItem('pharaoh_active_student');
+      const saved = localStorage.getItem('pharaoh_web_student');
       if (saved) {
         try {
-          const parsed = JSON.parse(saved);
-          if (parsed && parsed.Name) {
-            setLoggedInStudent(parsed);
-          }
-        } catch {}
-      } else {
-        updateHeaderStatus();
-      }
-
-      // Restore courses selection if exists
-      const savedCourses = localStorage.getItem('pharaoh_registered_courses');
-      if (savedCourses) {
-        try {
-          selectedCourses = JSON.parse(savedCourses);
+          const s = JSON.parse(saved);
+          if (s && s.Name) renderStudentProfile(s);
         } catch {}
       }
-
-      loadCoursesCatalog();
-      loadLecturesList();
-      loadExamsSchedule();
+      fetchExamsForPortal();
     });
   </script>
 </body>
