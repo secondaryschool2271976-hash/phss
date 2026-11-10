@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام رفع وتحميل المحاضرات والواجبات | Cloudflare R2</title>
+  <!-- Google Fonts & Tailwind CSS CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+          },
+          colors: {
+            pharaoh: {
+              gold: '#D4AF37',
+              goldLight: '#F5E7B2',
+              goldDark: '#997316',
+              navy: '#0F1C3F',
+              navyLight: '#1E3264',
+              navyDark: '#080E21',
+              papyrus: '#F9F6EE',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    .drag-active {
+      border-color: #D4AF37 !important;
+      background-color: rgba(212, 175, 55, 0.08) !important;
+      transform: scale(1.01);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-pharaoh-navyDark via-pharaoh-navy to-pharaoh-navyLight text-white shadow-lg sticky top-0 z-30 border-b border-pharaoh-gold/30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-pharaoh-gold flex items-center justify-center shadow-md shadow-pharaoh-gold/20">
+          <svg class="w-7 h-7 text-pharaoh-navyDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-black text-pharaoh-goldLight flex items-center gap-2">
+            منصة رفع المحاضرات والواجبات
+            <span class="text-xs bg-pharaoh-gold text-pharaoh-navyDark px-2 py-0.5 rounded-full font-bold">Cloudflare R2</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-300">سحابة التخزين الأكاديمي المباشر - تطبيق الفراعنة التعليمي</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs">
+        <div class="flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 px-3 py-1.5 rounded-xl font-semibold">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Bucket: <span id="bucketStatus" class="font-mono">lecture-data</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full space-y-8">
+
+    <!-- Hero Announcement -->
+    <div class="bg-gradient-to-br from-pharaoh-navy to-pharaoh-navyDark rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-pharaoh-gold/20">
+      <div class="absolute -left-12 -top-12 w-48 h-48 bg-pharaoh-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="relative z-10 max-w-2xl">
+        <span class="inline-block text-xs uppercase tracking-wider text-pharaoh-gold font-bold bg-pharaoh-gold/10 px-3 py-1 rounded-full border border-pharaoh-gold/20 mb-3">
+          تخزين سحابي فائق السرعة
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2 leading-relaxed">
+          رفع وتوزيع ملفات المواد الدراسية بروابط مباشرة
+        </h2>
+        <p class="text-sm text-slate-300 leading-relaxed mb-4">
+          يتم رفع المحاضرات والواجبات والشيتات بصيغ (PDF, MP4, PPTX, DOCX, ZIP) مباشرة إلى سحابة Cloudflare R2 مع توليد رابط تحميل مباشر وسريع لكل ملف.
+        </p>
+        <div class="flex flex-wrap gap-2 text-xs">
+          <span class="bg-white/10 px-3 py-1 rounded-lg border border-white/10">📄 مستندات PDF و Word</span>
+          <span class="bg-white/10 px-3 py-1 rounded-lg border border-white/10">📊 عروض تقديمية PPTX</span>
+          <span class="bg-white/10 px-3 py-1 rounded-lg border border-white/10">🎬 فيديوهات MP4</span>
+          <span class="bg-white/10 px-3 py-1 rounded-lg border border-white/10">🗜️ حزم مضغوطة ZIP</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Form Card -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+      <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+        <svg class="w-5 h-5 text-pharaoh-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+        </svg>
+        إضافة ملف جديد (محاضرة / واجب / شيت)
+      </h3>
+
+      <form id="uploadForm" class="space-y-6">
+
+        <!-- Drag & Drop Zone -->
+        <div 
+          id="dropZone" 
+          class="border-2 border-dashed border-slate-300 hover:border-pharaoh-gold transition-all duration-200 rounded-3xl p-8 text-center bg-slate-50/50 cursor-pointer group relative"
+        >
+          <input 
+            type="file" 
+            id="fileInput" 
+            name="file" 
+            class="hidden" 
+            accept=".pdf,.mp4,.pptx,.docx,.zip,application/pdf,video/mp4,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip"
+          >
+
+          <div id="dropZonePrompt" class="space-y-3">
+            <div class="w-16 h-16 mx-auto bg-amber-50 group-hover:bg-amber-100 rounded-2xl flex items-center justify-center transition-colors text-pharaoh-goldDark">
+              <svg class="w-8 h-8 transition-transform group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-slate-800 text-base">
+                اسحب الملف وأفلته هنا، أو <span class="text-pharaoh-goldDark underline">اضغط للاختيار من جهازك</span>
+              </p>
+              <p class="text-xs text-slate-500 mt-1">
+                الصيغ المدعومة: PDF, MP4, PPTX, DOCX, ZIP (الحد الأقصى: 100 ميجابايت)
+              </p>
+            </div>
+          </div>
+
+          <!-- Selected File Preview -->
+          <div id="selectedFileInfo" class="hidden text-right bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div id="fileTypeBadge" class="w-10 h-10 rounded-xl bg-pharaoh-navy text-pharaoh-goldLight flex items-center justify-center font-bold text-xs uppercase">
+                PDF
+              </div>
+              <div>
+                <p id="selectedFileName" class="font-bold text-slate-900 text-sm truncate max-w-xs sm:max-w-md"></p>
+                <p id="selectedFileSize" class="text-xs text-slate-500"></p>
+              </div>
+            </div>
+            <button type="button" id="removeFileBtn" class="text-rose-500 hover:bg-rose-50 p-2 rounded-xl transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Form Inputs Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- Title -->
+          <div class="space-y-1.5 sm:col-span-2 md:col-span-1">
+            <label class="block text-xs font-bold text-slate-700">اسم المحاضرة أو الواجب *</label>
+            <input 
+              type="text" 
+              id="titleInput" 
+              name="title" 
+              required 
+              placeholder="مثال: المحاضرة 4 - قواعد البيانات العلائقية" 
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold focus:border-pharaoh-gold text-sm"
+            >
+          </div>
+
+          <!-- Subject Name -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-slate-700">اسم المادة الدراسية *</label>
+            <input 
+              type="text" 
+              id="subjectInput" 
+              name="subjectName" 
+              required 
+              placeholder="مثال: تخطيط موارد المؤسسات (ERP)" 
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold focus:border-pharaoh-gold text-sm"
+            >
+          </div>
+
+          <!-- Year Group -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-slate-700">الفرقة الدراسية *</label>
+            <select 
+              id="yearSelect" 
+              name="yearGroup" 
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold focus:border-pharaoh-gold text-sm bg-white"
+            >
+              <option value="الفرقة الأولى">الفرقة الأولى</option>
+              <option value="الفرقة الثانية">الفرقة الثانية</option>
+              <option value="الفرقة الثالثة" selected>الفرقة الثالثة</option>
+              <option value="الفرقة الرابعة">الفرقة الرابعة</option>
+            </select>
+          </div>
+
+          <!-- Department -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-slate-700">القسم الدراسي *</label>
+            <select 
+              id="deptSelect" 
+              name="department" 
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold focus:border-pharaoh-gold text-sm bg-white"
+            >
+              <option value="MIS" selected>نظم معلومات إدارية (MIS)</option>
+              <option value="CS">علوم حاسب (CS)</option>
+              <option value="BA">إدارة أعمال (BA)</option>
+            </select>
+          </div>
+
+          <!-- Category -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-slate-700">نوع الملف / التصنيف</label>
+            <select 
+              id="categorySelect" 
+              name="category" 
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold focus:border-pharaoh-gold text-sm bg-white"
+            >
+              <option value="محاضرة" selected>محاضرة دراسية (Lecture)</option>
+              <option value="واجب / تكليف">واجب وتكليف (Assignment)</option>
+              <option value="شيت وسكاشن">شيت عملي (Lab Sheet)</option>
+              <option value="ملخص ومراجعة">ملخص ومراجعة نهائية (Summary)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Progress Bar Container -->
+        <div id="progressContainer" class="hidden space-y-2 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+            <span class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 animate-spin text-pharaoh-goldDark" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              جاري رفع الملف إلى Cloudflare R2...
+            </span>
+            <span id="progressText" class="font-mono text-pharaoh-goldDark">0%</span>
+          </div>
+          <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden shadow-inner">
+            <div 
+              id="progressBar" 
+              class="bg-gradient-to-r from-pharaoh-goldDark via-pharaoh-gold to-amber-300 h-3 rounded-full transition-all duration-150 w-0"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button 
+            type="submit" 
+            id="submitBtn" 
+            class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-pharaoh-navy to-pharaoh-navyDark text-white hover:from-pharaoh-navyLight hover:to-pharaoh-navy font-bold rounded-2xl shadow-lg shadow-pharaoh-navy/20 hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <svg class="w-5 h-5 text-pharaoh-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            رفع الملف إلى السحابة
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Upload Success Result Card (Hidden by default) -->
+    <div id="resultCard" class="hidden bg-gradient-to-br from-emerald-50 to-white rounded-3xl p-6 sm:p-8 shadow-sm border border-emerald-200 space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-base font-extrabold text-slate-900">تم رفع الملف بنجاح إلى Cloudflare R2!</h4>
+            <p id="resTimestamp" class="text-xs text-slate-500"></p>
+          </div>
+        </div>
+        <span id="resBadge" class="text-xs bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full">
+          جاهز للتحميل
+        </span>
+      </div>
+
+      <!-- File Details Grid -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+        <div>
+          <span class="text-slate-400 block font-semibold">اسم المحاضرة:</span>
+          <span id="resTitle" class="text-slate-800 font-bold text-sm"></span>
+        </div>
+        <div>
+          <span class="text-slate-400 block font-semibold">المادة والفرقة:</span>
+          <span id="resSubjectYear" class="text-slate-800 font-bold text-sm"></span>
+        </div>
+        <div>
+          <span class="text-slate-400 block font-semibold">اسم الملف الأصلي:</span>
+          <span id="resOriginalName" class="text-slate-800 font-mono text-xs truncate block"></span>
+        </div>
+        <div>
+          <span class="text-slate-400 block font-semibold">حجم الملف:</span>
+          <span id="resSize" class="text-slate-800 font-bold text-sm"></span>
+        </div>
+      </div>
+
+      <!-- Public Download URL Box -->
+      <div class="space-y-1.5">
+        <label class="block text-xs font-bold text-slate-700">رابط التحميل المباشر (Public Download Domain):</label>
+        <div class="flex items-center gap-2">
+          <input 
+            type="text" 
+            id="resDownloadUrl" 
+            readonly 
+            class="flex-1 bg-slate-100 px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 select-all focus:outline-none"
+          >
+          <!-- Copy Link Button -->
+          <button 
+            type="button" 
+            id="copyLinkBtn" 
+            class="px-4 py-2.5 bg-pharaoh-navy hover:bg-pharaoh-navyLight text-pharaoh-goldLight font-bold text-xs rounded-xl flex items-center gap-1.5 transition whitespace-nowrap shadow-sm"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            <span id="copyBtnText">نسخ الرابط</span>
+          </button>
+
+          <!-- Direct Download Button -->
+          <a 
+            id="directDownloadBtn" 
+            href="#" 
+            target="_blank" 
+            class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition whitespace-nowrap shadow-sm"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            تحميل الملف مباشرة
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Uploaded Files Library Section -->
+    <div class="space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <svg class="w-5 h-5 text-pharaoh-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            سجل الملفات المرفوعة مؤخراً
+          </h3>
+          <p class="text-xs text-slate-500">الملفات المخزنة في سحابة Cloudflare R2 مع روابط الوصول العام</p>
+        </div>
+        <button 
+          type="button" 
+          id="refreshFilesBtn" 
+          class="text-xs text-pharaoh-navy hover:text-pharaoh-navyLight font-bold flex items-center gap-1 self-start sm:self-auto bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-xl transition"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          تحديث السجل
+        </button>
+      </div>
+
+      <!-- Search Bar in Top of Files List -->
+      <div class="relative w-full">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="بحث في الملفات المرفوعة باسم المادة أو اسم المحاضرة..." 
+          class="w-full pr-11 pl-11 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-pharaoh-gold focus:border-pharaoh-gold text-sm bg-white shadow-sm"
+        >
+        <svg class="w-5 h-5 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <button 
+          type="button" 
+          id="clearSearchBtn" 
+          class="hidden absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-lg transition"
+        >
+          مسح
+        </button>
+      </div>
+
+      <!-- File List Cards Container -->
+      <div id="filesList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold transition-all duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2">
+    <span id="toastIcon">✨</span>
+    <span id="toastMessage">تم نسخ الرابط بنجاح!</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-center text-xs">
+    <div class="max-w-6xl mx-auto px-4">
+      <p class="font-bold text-slate-300">نظام إدارة الملفات السحابي - تطبيق الفراعنة الأكاديمي</p>
+      <p class="mt-1 font-mono text-slate-500">Cloudflare R2 Endpoint: 20fd1dbe0e11c7fcd435574c9c57835f.r2.cloudflarestorage.com</p>
+    </div>
+  </footer>
+
+  <!-- Client JavaScript -->
+  <script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const dropZonePrompt = document.getElementById('dropZonePrompt');
+    const selectedFileInfo = document.getElementById('selectedFileInfo');
+    const selectedFileName = document.getElementById('selectedFileName');
+    const selectedFileSize = document.getElementById('selectedFileSize');
+    const fileTypeBadge = document.getElementById('fileTypeBadge');
+    const removeFileBtn = document.getElementById('removeFileBtn');
+
+    const uploadForm = document.getElementById('uploadForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+
+    const resultCard = document.getElementById('resultCard');
+    const resTitle = document.getElementById('resTitle');
+    const resSubjectYear = document.getElementById('resSubjectYear');
+    const resOriginalName = document.getElementById('resOriginalName');
+    const resSize = document.getElementById('resSize');
+    const resDownloadUrl = document.getElementById('resDownloadUrl');
+    const resTimestamp = document.getElementById('resTimestamp');
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const copyBtnText = document.getElementById('copyBtnText');
+    const directDownloadBtn = document.getElementById('directDownloadBtn');
+
+    const filesList = document.getElementById('filesList');
+    const refreshFilesBtn = document.getElementById('refreshFilesBtn');
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+
+    let currentFile = null;
+    let allLoadedFiles = [];
+
+    // Search filter handler
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      if (q.length > 0) {
+        clearSearchBtn.classList.remove('hidden');
+      } else {
+        clearSearchBtn.classList.add('hidden');
+      }
+      filterAndRenderFiles();
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      clearSearchBtn.classList.add('hidden');
+      filterAndRenderFiles();
+    });
+
+    function filterAndRenderFiles() {
+      const q = searchInput.value.trim().toLowerCase();
+      if (!q) {
+        renderFiles(allLoadedFiles);
+        return;
+      }
+      const filtered = allLoadedFiles.filter(item => {
+        const title = (item.metadata ? item.metadata.title : item.fileName).toLowerCase();
+        const subject = (item.metadata && item.metadata.subjectName ? item.metadata.subjectName : '').toLowerCase();
+        const origName = (item.originalName || item.fileName || '').toLowerCase();
+        return title.includes(q) || subject.includes(q) || origName.includes(q);
+      });
+      renderFiles(filtered);
+    }
+
+    // Toast helper
+    function showToast(message, icon = '✅') {
+      toastMessage.textContent = message;
+      document.getElementById('toastIcon').textContent = icon;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    // Helper for formatting sizes
+    function formatBytes(bytes) {
+      if (!+bytes) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+    }
+
+    // Handle File Selection
+    function selectFile(file) {
+      if (!file) return;
+
+      const validExts = ['.pdf', '.mp4', '.pptx', '.docx', '.zip'];
+      const ext = '.' + file.name.split('.').pop().toLowerCase();
+      if (!validExts.includes(ext)) {
+        showToast('نوع الملف غير مدعوم! الصيغ المقبولة: PDF, MP4, PPTX, DOCX, ZIP', '⚠️');
+        return;
+      }
+
+      currentFile = file;
+      selectedFileName.textContent = file.name;
+      selectedFileSize.textContent = formatBytes(file.size);
+      
+      const badgeText = ext.replace('.', '').toUpperCase();
+      fileTypeBadge.textContent = badgeText;
+      if (badgeText === 'PDF') {
+        fileTypeBadge.className = 'w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold text-xs uppercase';
+      } else if (badgeText === 'MP4') {
+        fileTypeBadge.className = 'w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold text-xs uppercase';
+      } else if (badgeText === 'PPTX') {
+        fileTypeBadge.className = 'w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center font-bold text-xs uppercase';
+      } else if (badgeText === 'DOCX') {
+        fileTypeBadge.className = 'w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs uppercase';
+      } else {
+        fileTypeBadge.className = 'w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xs uppercase';
+      }
+
+      dropZonePrompt.classList.add('hidden');
+      selectedFileInfo.classList.remove('hidden');
+
+      // Autofill title if empty
+      const titleInput = document.getElementById('titleInput');
+      if (!titleInput.value.trim()) {
+        const cleanName = file.name.substring(0, file.name.lastIndexOf('.'));
+        titleInput.value = cleanName;
+      }
+    }
+
+    function clearSelectedFile() {
+      currentFile = null;
+      fileInput.value = '';
+      dropZonePrompt.classList.remove('hidden');
+      selectedFileInfo.classList.add('hidden');
+    }
+
+    // Drag & Drop events
+    dropZone.addEventListener('click', (e) => {
+      if (e.target !== removeFileBtn && !removeFileBtn.contains(e.target)) {
+        fileInput.click();
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        selectFile(e.target.files[0]);
+      }
+    });
+
+    removeFileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      clearSelectedFile();
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add('drag-active');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('drag-active');
+      });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      if (dt.files && dt.files.length > 0) {
+        selectFile(dt.files[0]);
+      }
+    });
+
+    // Copy Download Link Handler
+    copyLinkBtn.addEventListener('click', () => {
+      const url = resDownloadUrl.value;
+      if (url) {
+        navigator.clipboard.writeText(url).then(() => {
+          copyBtnText.textContent = 'تم النسخ!';
+          showToast('تم نسخ رابط التحميل المباشر بنجاح!');
+          setTimeout(() => {
+            copyBtnText.textContent = 'نسخ الرابط';
+          }, 2000);
+        }).catch(() => {
+          resDownloadUrl.select();
+          document.execCommand('copy');
+          showToast('تم نسخ الرابط!');
+        });
+      }
+    });
+
+    // Form Submission with XMLHttpRequest for progress tracking
+    uploadForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (!currentFile) {
+        showToast('يرجى اختيار ملف لرفعه أولاً!', '⚠️');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', currentFile);
+      formData.append('title', document.getElementById('titleInput').value.trim());
+      formData.append('subjectName', document.getElementById('subjectInput').value.trim());
+      formData.append('yearGroup', document.getElementById('yearSelect').value);
+      formData.append('department', document.getElementById('deptSelect').value);
+      formData.append('category', document.getElementById('categorySelect').value);
+
+      // Show Progress Bar
+      progressContainer.classList.remove('hidden');
+      progressBar.style.width = '0%';
+      progressText.textContent = '0%';
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload', true);
+
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          progressBar.style.width = percentComplete + '%';
+          progressText.textContent = percentComplete + '%';
+        }
+      };
+
+      xhr.onload = () => {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+        try {
+          const response = JSON.parse(xhr.responseText);
+          if (xhr.status === 200 && response.success) {
+            progressBar.style.width = '100%';
+            progressText.textContent = '100% اكتمل!';
+            showToast('تم رفع الملف بنجاح إلى Cloudflare R2!');
+
+            // Populate Result Card
+            const f = response.file;
+            resTitle.textContent = f.metadata.title;
+            resSubjectYear.textContent = `${f.metadata.subjectName} (${f.metadata.yearGroup})`;
+            resOriginalName.textContent = f.originalName;
+            resSize.textContent = f.formattedSize;
+            resDownloadUrl.value = f.downloadUrl;
+            directDownloadBtn.href = f.downloadUrl;
+            resTimestamp.textContent = new Date().toLocaleTimeString('ar-EG');
+
+            resultCard.classList.remove('hidden');
+            resultCard.scrollIntoView({ behavior: 'smooth' });
+
+            // Store in Local Cache / History
+            saveFileToLocalHistory(f);
+            loadFilesList();
+
+            // Clear file from input
+            clearSelectedFile();
+          } else {
+            showToast('خطأ: ' + (response.error || 'فشل الرفع'), '❌');
+          }
+        } catch (err) {
+          showToast('حدث خطأ أثناء معالجة استجابة السيرفر', '❌');
+        }
+      };
+
+      xhr.onerror = () => {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        showToast('تعذر الاتصال بالخادم، تأكد من تشغيل السيرفر', '❌');
+      };
+
+      xhr.send(formData);
+    });
+
+    // Local Storage History
+    function saveFileToLocalHistory(file) {
+      let history = JSON.parse(localStorage.getItem('pharaoh_uploads') || '[]');
+      history.unshift(file);
+      if (history.length > 30) history = history.slice(0, 30);
+      localStorage.setItem('pharaoh_uploads', JSON.stringify(history));
+    }
+
+    function loadFilesList() {
+      // First load local history or fetch from /api/files
+      fetch('/api/files')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.files && data.files.length > 0) {
+            allLoadedFiles = data.files;
+          } else {
+            allLoadedFiles = JSON.parse(localStorage.getItem('pharaoh_uploads') || '[]');
+          }
+          filterAndRenderFiles();
+        })
+        .catch(() => {
+          allLoadedFiles = JSON.parse(localStorage.getItem('pharaoh_uploads') || '[]');
+          filterAndRenderFiles();
+        });
+    }
+
+    function renderFiles(list) {
+      if (!list || list.length === 0) {
+        filesList.innerHTML = `
+          <div class="col-span-full p-8 text-center bg-white rounded-3xl border border-slate-200 text-slate-400">
+            <svg class="w-10 h-10 mx-auto text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            <p class="font-bold text-sm">لا توجد ملفات مرفوعة حالياً</p>
+            <p class="text-xs">قم برفع أول محاضرة أو واجب لعرضها هنا</p>
+          </div>
+        `;
+        return;
+      }
+
+      filesList.innerHTML = list.map(item => {
+        const ext = (item.extension || item.fileName.split('.').pop()).toUpperCase();
+        let badgeColor = 'bg-slate-700';
+        if (ext === 'PDF') badgeColor = 'bg-rose-600';
+        else if (ext === 'MP4') badgeColor = 'bg-purple-600';
+        else if (ext === 'PPTX') badgeColor = 'bg-orange-500';
+        else if (ext === 'DOCX') badgeColor = 'bg-blue-600';
+        else if (ext === 'ZIP') badgeColor = 'bg-emerald-600';
+
+        const title = item.metadata ? item.metadata.title : item.fileName;
+        const sub = item.metadata ? `${item.metadata.subjectName} | ${item.metadata.yearGroup}` : '';
+
+        return `
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 hover:shadow-md transition flex flex-col justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl ${badgeColor} text-white flex items-center justify-center font-bold text-xs uppercase flex-shrink-0">
+                ${ext}
+              </div>
+              <div class="overflow-hidden flex-1">
+                <h5 class="font-bold text-slate-900 text-sm truncate" title="${title}">${title}</h5>
+                ${sub ? `<p class="text-xs text-slate-500 truncate">${sub}</p>` : ''}
+                <p class="text-[11px] text-slate-400 font-mono mt-0.5">${item.formattedSize || ''}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
+              <button 
+                onclick="navigator.clipboard.writeText('${item.downloadUrl}').then(() => showToast('تم نسخ الرابط!'))"
+                class="flex-1 py-1.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1"
+              >
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+                نسخ الرابط
+              </button>
+
+              <a 
+                href="${item.downloadUrl}" 
+                target="_blank" 
+                class="flex-1 py-1.5 px-3 bg-pharaoh-navy hover:bg-pharaoh-navyLight text-pharaoh-goldLight rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 text-center"
+              >
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                تحميل
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    refreshFilesBtn.addEventListener('click', loadFilesList);
+
+    // Initial Load
+    loadFilesList();
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "pharaohs-r2-upload-service",
+  "version": "1.0.0",
+  "description": "Backend & Frontend system for uploading and downloading university lectures and assignments to Cloudflare R2 Object Storage",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["cloudflare", "r2", "s3", "upload", "express", "university", "lectures"],
+  "author": "Pharaohs University App",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.750.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}
