@@ -1,6 +1,7 @@
 {
   "name": "pharaohs-r2-upload-service",
   "version": "1.0.0",
+  "type": "module",
   "description": "Backend & Frontend system for uploading and downloading university lectures and assignments to Cloudflare R2 Object Storage",
   "main": "server.js",
   "scripts": {
